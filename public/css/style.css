@@ -109,6 +109,28 @@ html, body {
   box-shadow: 0 4px 12px rgba(73, 121, 236, 0.3);
 }
 
+.brand-logo-img {
+  height: 42px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(14, 27, 44, 0.08));
+}
+
+.mobile-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+}
+
+.client-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
