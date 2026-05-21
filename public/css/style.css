@@ -118,16 +118,16 @@ html, body {
 }
 
 .mobile-logo-img {
-  height: 64px;
+  height: 44px;
   width: auto;
-  max-width: 64px;
+  max-width: 44px;
   object-fit: contain;
 }
 
 .client-logo-img {
-  height: 72px;
+  height: 48px;
   width: auto;
-  max-width: 72px;
+  max-width: 48px;
   object-fit: contain;
 }
 
@@ -971,7 +971,7 @@ table.brand-table .sub {
 @media (max-width: 900px) {
   #app-container {
     grid-template-columns: 1fr;
-    padding-top: 96px; /* Space for the fixed top bar */
+    padding-top: 64px; /* Space for the fixed top bar */
   }
 
   .mobile-header {
@@ -980,7 +980,7 @@ table.brand-table .sub {
     top: 0;
     left: 0;
     right: 0;
-    height: 96px;
+    height: 64px;
     background: rgba(14, 27, 44, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
