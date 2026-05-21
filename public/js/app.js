@@ -920,6 +920,7 @@ async function fetchDiagnosticsList() {
         <div class="diag-actions">
           <button class="btn btn-secondary" onclick="loadDiagnosticToForm('${diag.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar</button>
           <a class="btn btn-primary" href="/cliente/${diag.id}" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Dashboard</a>
+          <button class="btn btn-secondary" onclick="copyDiagnosticLink('${diag.id}')" style="background:#5c6bc0; color:white; border:none; display:inline-flex; align-items:center; gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar Enlace</button>
           <button class="btn btn-coral" onclick="deleteDiagnostic('${diag.id}', '${diag.empresa}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Borrar</button>
         </div>
       `;
@@ -1037,6 +1038,17 @@ function copyClientURL() {
   urlEl.select();
   document.execCommand('copy');
   showToast("📋 ¡Enlace copiado al portapapeles con éxito!");
+}
+
+function copyDiagnosticLink(id) {
+  const clientUrl = window.location.origin + '/cliente/' + id;
+  const tempInput = document.createElement('input');
+  tempInput.value = clientUrl;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand('copy');
+  document.body.removeChild(tempInput);
+  showToast("📋 ¡Enlace del cliente copiado al portapapeles con éxito!");
 }
 
 // Disparar la impresión nativa de Chrome/Safari (Usa CSS @media print)

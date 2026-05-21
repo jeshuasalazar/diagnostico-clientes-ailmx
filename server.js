@@ -10,6 +10,57 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Basic Authentication Middleware to protect consultant dashboard and edit actions
+const authMiddleware = (req, res, next) => {
+  const path = req.path;
+  const method = req.method;
+
+  let isProtected = false;
+
+  if (path === '/' || path === '/index.html') {
+    isProtected = true;
+  } else if (path === '/api/diagnosticos') {
+    isProtected = true; // GET list all, POST new
+  } else if (path.startsWith('/api/diagnosticos/')) {
+    // /api/diagnosticos/:id -> GET details is public, PUT and DELETE are protected
+    if (method === 'PUT' || method === 'DELETE') {
+      isProtected = true;
+    }
+  }
+
+  if (isProtected) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="aiLearning Onboarding Portal"');
+      return res.status(401).send('Authentication required.');
+    }
+
+    try {
+      const token = authHeader.split(' ')[1];
+      const credentials = Buffer.from(token, 'base64').toString('ascii').split(':');
+      const username = credentials[0];
+      const password = credentials[1];
+
+      // Default credentials if not configured in environment variables
+      const expectedUser = process.env.ADMIN_USER || 'admin';
+      const expectedPass = process.env.ADMIN_PASS || 'ailearning2026';
+
+      if (username === expectedUser && password === expectedPass) {
+        return next();
+      }
+    } catch (e) {
+      // Fall through to unauthorized
+    }
+
+    res.setHeader('WWW-Authenticate', 'Basic realm="aiLearning Onboarding Portal"');
+    return res.status(401).send('Invalid credentials.');
+  }
+
+  next();
+};
+
+app.use(authMiddleware);
+
 // Serve static assets out of the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
