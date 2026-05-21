@@ -1,7 +1,30 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
 const dbPath = process.env.DATABASE_PATH || path.resolve(__dirname, 'diagnosticos.db');
+
+// Si la base de datos está configurada en un volumen persistente (ej: /data/diagnosticos.db)
+// y no existe aún, pero tenemos una base de datos sembrada en la raíz, la copiamos al volumen.
+if (process.env.DATABASE_PATH) {
+  const targetDir = path.dirname(process.env.DATABASE_PATH);
+  try {
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    if (!fs.existsSync(process.env.DATABASE_PATH)) {
+      const rootDbPath = path.resolve(__dirname, 'diagnosticos.db');
+      if (fs.existsSync(rootDbPath)) {
+        console.log('Copiando base de datos sembrada de la raíz al volumen persistente...');
+        fs.copyFileSync(rootDbPath, process.env.DATABASE_PATH);
+        console.log('Base de datos sembrada copiada con éxito.');
+      }
+    }
+  } catch (err) {
+    console.error('Error al migrar la base de datos al volumen:', err.message);
+  }
+}
+
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);

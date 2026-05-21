@@ -1,5 +1,4 @@
 node_modules/
-diagnosticos.db
 diagnosticos.db-journal
 .DS_Store
 .gemini/
