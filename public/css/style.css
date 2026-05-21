@@ -110,24 +110,24 @@ html, body {
 }
 
 .brand-logo-img {
-  height: 84px;
+  height: 80px;
   width: auto;
-  max-width: 260px;
+  max-width: 80px;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(14, 27, 44, 0.08));
 }
 
 .mobile-logo-img {
-  height: 76px;
+  height: 64px;
   width: auto;
-  max-width: 220px;
+  max-width: 64px;
   object-fit: contain;
 }
 
 .client-logo-img {
-  height: 76px;
+  height: 72px;
   width: auto;
-  max-width: 220px;
+  max-width: 72px;
   object-fit: contain;
 }
 
