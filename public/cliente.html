@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aiLearning — Portal de Diagnóstico del Cliente</title>
+  <!-- Google Font & Styling -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Chart.js CDN for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- html2pdf.js CDN for optional single-click client PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    /* Premium Client Portal Adjustments (Non-conflicting with style.css) */
+    .client-header {
+      background: rgba(14, 27, 44, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      color: var(--white);
+    }
+    
+    .client-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--white);
+    }
+    
+    .client-logo .logo-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--brand);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(73, 121, 236, 0.3);
+    }
+    
+    .client-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .client-logo-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+    
+    .client-logo-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .client-hero-card {
+      background: linear-gradient(135deg, #0e1b2c 0%, #1a365d 100%);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .client-hero-card::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(73, 121, 236, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .client-hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    
+    .client-hero-meta {
+      font-size: 14px;
+      opacity: 0.8;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .client-hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .client-hero-meta strong {
+      color: var(--brand);
+    }
+    
+    .read-only-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .client-bottleneck-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .client-bottleneck-item {
+      padding: 12px 16px;
+      background: var(--paper);
+      border-left: 3px solid var(--brand);
+      border-radius: 0 8px 8px 0;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .client-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 40px;
+    }
+
+    .grid-1-2 {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 32px;
+    }
+
+    /* Roadmap Timeline */
+    .roadmap-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .roadmap-step {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .roadmap-step:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--brand);
+      transform: translateY(-2px);
+    }
+
+    .roadmap-step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand-soft);
+      color: var(--brand-deep);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .roadmap-step-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .roadmap-step-desc {
+      font-size: 12px;
+      color: var(--mute);
+      line-height: 1.5;
+    }
+
+    /* Screen container wrapper */
+    #client-workspace-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================
+       SCREEN INTERFACE (Client Portal)
+       ================================================================ -->
+  <div id="app-container" style="display: block;">
+    <div id="client-workspace-wrapper">
+      
+      <!-- Glassmorphic Top Nav -->
+      <header class="client-header">
+        <a href="#" class="client-logo">
+          <div class="logo-box">ai</div>
+          <div class="client-logo-text">
+            <span class="client-logo-title">aiLEARNING</span>
+            <span class="client-logo-sub">portal del cliente</span>
+          </div>
+        </a>
+        <div style="display:flex; gap:16px; align-items:center;">
+          <span class="read-only-badge">🔒 SOLO LECTURA</span>
+          <button class="btn btn-secondary" onclick="triggerNativePrint()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir Reporte</button>
+          <button class="btn btn-primary" onclick="exportPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Descargar PDF</button>
+        </div>
+      </header>
+
+      <!-- Main Client Content -->
+      <main class="client-layout">
+        
+        <!-- Hero section -->
+        <div class="client-hero-card">
+          <h2 class="client-hero-title" id="client-company-name">Cargando diagnóstico...</h2>
+          <div class="client-hero-meta">
+            <span>Vertical: <strong id="client-vertical-label">-</strong></span>
+            <span>Contacto: <strong id="client-contact-name">-</strong></span>
+            <span>Folio: <strong id="client-folio">-</strong></span>
+            <span>Fecha: <strong id="client-date">-</strong></span>
+          </div>
+        </div>
+
+        <!-- 4 KPI Summary Cards -->
+        <div class="kpi-row">
+          <div class="kpi-card ink">
+            <div class="kpi-label">Costo Anual del Dolor</div>
+            <div class="kpi-value" id="dash-pain-total" style="color:var(--brand);">$0</div>
+            <div class="kpi-meta">Pérdida por procesos manuales ineficientes.</div>
+          </div>
+          <div class="kpi-card sage">
+            <div class="kpi-label">Beneficios Anuales Proyectados</div>
+            <div class="kpi-value" id="dash-benefits-total">$0</div>
+            <div class="kpi-meta">Ahorro en tiempo + ganancias por conversión.</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Retorno de Inversión (ROI)</div>
+            <div class="kpi-value" id="dash-roi-percent" style="color:var(--brand-deep);">0%</div>
+            <div class="kpi-meta">ROI anual basado en TCO metodológico.</div>
+          </div>
+          <div class="kpi-card coral">
+            <div class="kpi-label">Retorno de Inversión (Payback)</div>
+            <div class="kpi-value" id="dash-payback-months">0 meses</div>
+            <div class="kpi-meta">Periodo estimado de recuperación.</div>
+          </div>
+        </div>
+
+        <!-- Diagnostic & Financial Breakdown Grid -->
+        <div class="grid-2">
+          
+          <!-- Column 1: Priority Matrix Radar & Selected Solution Blueprint -->
+          <div style="display:flex; flex-direction:column; gap:32px;">
+            
+            <!-- Prioritization Radar Card -->
+            <div class="card">
+              <div class="card-title-group">
+                <h3>Matriz de Prioridades Operativas</h3>
+                <span class="card-subtitle">Análisis Multicriterio</span>
+              </div>
+              <div style="height: 280px; position: relative;">
+                <canvas id="priority-radar-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- MVP Solution Proposal Box -->
+            <div class="card" style="background: var(--brand-soft); border-color: var(--brand);">
+              <div class="card-title-group" style="border-color: rgba(73, 121, 236, 0.2);">
+                <h3 style="color: var(--brand-deep);">Sprint MVP Seleccionado</h3>
+                <span class="card-subtitle" style="color: var(--brand);">Propuesta Funcional</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div class="form-group">
+                  <span class="kpi-label">Nombre de la Solución</span>
+                  <strong style="font-size:16px; color:var(--ink);" id="dash-solution-name">-</strong>
+                </div>
+                <div class="form-group">
+                  <span class="kpi-label">Herramientas & Stack No-Code</span>
+                  <span style="font-size:13.5px; font-weight:600; color:var(--ink-2);" id="dash-solution-stack">-</span>
+                </div>
+                <div class="form-group">
+                  <span class="kpi-label">Métrica de Éxito Comprometida</span>
+                  <span style="font-size:13.5px; font-weight:600; color:var(--ink-2);" id="dash-metric-summary">-</span>
+                </div>
+                <div class="form-group" style="border-top:1px dashed rgba(73, 121, 236, 0.3); padding-top:12px;">
+                  <span class="kpi-label">Inversión Sprint MVP Upfront</span>
+                  <strong style="font-size:18px; color:var(--brand-deep);" id="dash-pricing-sprint">$0 MXN</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Business Info, Bottlenecks & ROI Table -->
+          <div style="display:flex; flex-direction:column; gap:32px;">
+            
+            <!-- Business Info & Bottlenecks Card -->
+            <div class="card">
+              <div class="card-title-group">
+                <h3>Diagnóstico Comercial y Canales</h3>
+                <span class="card-subtitle">Análisis Fricciones</span>
+              </div>
+              
+              <div class="grid-2">
+                <div class="form-group">
+                  <span class="kpi-label">Ubicación y Estructura</span>
+                  <span id="dash-ciudad" style="font-weight:600;">-</span>
+                </div>
+                <div class="form-group">
+                  <span class="kpi-label">Estructura Organizacional</span>
+                  <span id="dash-empleados" style="font-weight:600;">-</span>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <span class="kpi-label">Sistemas CRM / ERP</span>
+                  <span id="dash-crm-erp" style="font-weight:600;">-</span>
+                </div>
+                <div class="form-group">
+                  <span class="kpi-label">Canales de Comunicación</span>
+                  <span id="dash-canales" style="font-weight:600;">-</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <span class="kpi-label">Métricas Financieras del Negocio</span>
+                <span id="dash-metrics" style="font-weight:600;">-</span>
+              </div>
+
+              <div class="form-group" style="border-top:1px solid var(--line-soft); padding-top:20px;">
+                <span class="kpi-label" style="margin-bottom:8px;">Dolores Detectados en la Operación</span>
+                <div class="client-bottleneck-list" id="dash-bottlenecks-list">
+                  <!-- Dynamic loading -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Detailed Engineering Finance Card -->
+            <div class="card">
+              <div class="card-title-group">
+                <h3>Ingeniería Financiera del Retorno (Anual)</h3>
+                <span class="card-subtitle">Desglose de Ahorros</span>
+              </div>
+              
+              <div class="roi-breakdown-box" style="grid-template-columns:1fr; background:var(--paper); border:none; padding:0; box-shadow:none;">
+                <div class="numbers" style="gap:14px;">
+                  <div class="roi-breakdown-row">
+                    <span>Ahorro en Horas de Operación (60% Prod. Fantasma):</span>
+                    <strong id="dash-time-saved" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Ingresos Extra por Conversión Comercial:</span>
+                    <strong id="dash-sales-extra" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Riesgos de Multas/Errores Operativos Evitados:</span>
+                    <strong id="dash-risks-avoided" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
+                  </div>
+                  
+                  <div class="roi-breakdown-row" style="border-top:1.5px dashed var(--line); padding-top:12px;">
+                    <span>Total Beneficios Anuales Proyectados:</span>
+                    <strong id="dash-roi-benefits-total-bottom" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700;">$0 MXN</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Costo Total de Propiedad TCO (Gateway + Sprint + APIs):</span>
+                    <strong id="dash-roi-tco-total-bottom" style="color:var(--coral); font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700;">$0 MXN</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Roadmap Timeline / Implementation Timeline -->
+        <div class="card">
+          <div class="card-title-group">
+            <h3>Plan de Implementación / Rollout Roadmap</h3>
+            <span class="card-subtitle">Estrategia Metodológica</span>
+          </div>
+          
+          <div class="roadmap-timeline">
+            <div class="roadmap-step">
+              <div class="roadmap-step-num">01</div>
+              <div class="roadmap-step-title">Semana 1: Kickoff & BPMN</div>
+              <div class="roadmap-step-desc">Alineación del equipo, modelado formal de procesos y mapeo detallado de variables operativas.</div>
+            </div>
+            
+            <div class="roadmap-step">
+              <div class="roadmap-step-num">02</div>
+              <div class="roadmap-step-title">Semana 2: Desarrollo Sandbox</div>
+              <div class="roadmap-step-desc">Construcción ágil de automatizaciones en Make/n8n y conexión de APIs seguras de Inteligencia Artificial.</div>
+            </div>
+            
+            <div class="roadmap-step">
+              <div class="roadmap-step-num">03</div>
+              <div class="roadmap-step-title">Semana 3: Pruebas & ADKAR</div>
+              <div class="roadmap-step-desc">Pruebas piloto de control de errores, afinación de prompts e inducción y adopción del personal operativo.</div>
+            </div>
+            
+            <div class="roadmap-step">
+              <div class="roadmap-step-num">04</div>
+              <div class="roadmap-step-title">Semana 4: Go-Live & Soporte</div>
+              <div class="roadmap-step-desc">Lanzamiento oficial del Agente IA en producción con monitoreo en caliente de KPIs de negocio.</div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Toast for notifications -->
+      <div id="toast" class="toast"></div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================
+       HIGH-FIDELITY PRINTABLE DOCUMENT TEMPLATE (PDF EXPORT ONLY)
+       ================================================================ -->
+  <div id="print-container">
+    
+    <!-- PAGE 1: COVER, DATOS & DOLORES -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>ai audit gateway<span class="slash">/</span>report</h1>
+        <div class="print-hero .sub">Auditoría Operativa de Inteligencia Artificial & Negocios</div>
+      </div>
+
+      <div class="print-meta-grid">
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Proyecto</div>
+          <div class="print-meta-v"><strong id="p-meta-folio">AG-2026</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Empresa</div>
+          <div class="print-meta-v"><strong id="p-meta-empresa">Empresa</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Vertical</div>
+          <div class="print-meta-v"><strong id="p-meta-giro">Vertical</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Consultor</div>
+          <div class="print-meta-v"><strong id="p-meta-consultor">Consultor</strong></div>
+        </div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">01</span>
+          <span class="print-sec-lbl">Información del Negocio y Diagnóstico Inicial</span>
+          <span class="print-sec-tag">Datos Comerciales</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Concepto Operativo</th>
+              <th style="width:30%;">Valor Comercial</th>
+              <th style="width:40%;">Tecnología & Canales</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">Contacto y Cargo:</td>
+              <td id="p-dat-contacto">Contacto (Cargo)</td>
+              <td><strong>CRM:</strong> <span id="p-dat-crm">HubSpot</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Ubicación y Antigüedad:</td>
+              <td id="p-dat-ciudad">Ciudad, Años Operando</td>
+              <td><strong>ERP:</strong> <span id="p-dat-erp">ERP</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Estructura Organizativa:</td>
+              <td id="p-dat-empleados">Empleados en Operaciones</td>
+              <td><strong>Canales:</strong> <span id="p-dat-canales">WA, Web</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Métricas Financieras Base:</td>
+              <td id="p-dat-metrics">Ticket y Transacciones</td>
+              <td><strong>Facturación:</strong> <span id="p-dat-facturacion">Actual vs Meta</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">02</span>
+          <span class="print-sec-lbl">Cuellos de Botella Identificados por Vertical</span>
+          <span class="print-sec-tag">Fricciones de Negocio</span>
+        </div>
+
+        <div id="print-bottlenecks-list-container" style="display:flex; flex-direction:column; gap:6px; font-size:8.5px; font-family:'JetBrains Mono',monospace;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 1 / 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: CUANTIFICACIÓN & PRIORIZACIÓN -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>financiero<span class="slash">/</span>análisis</h1>
+        <div class="print-hero .sub">Cuantificación del Dolor & Matriz de Prioridad</div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">03</span>
+          <span class="print-sec-lbl">Cuantificación Anual del Dolor ($MXN)</span>
+          <span class="print-sec-tag">El costo de la fricción</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Dolor / Proceso Evaluado</th>
+              <th class="num" style="width:15%;">Costo Personal</th>
+              <th class="num" style="width:15%;">Oportunidad Fuga</th>
+              <th class="num" style="width:15%;">Errores / Multas</th>
+              <th class="num" style="width:15%;">SaaS Actual</th>
+              <th class="num" style="width:10%;">Total Anual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold" id="p-pain1-name">Proceso 1</td>
+              <td class="num" id="p-pain1-personal">$0</td>
+              <td class="num" id="p-pain1-sales">$0</td>
+              <td class="num" id="p-pain1-errors">$0</td>
+              <td class="num" id="p-pain1-tool">$0</td>
+              <td class="num bold" id="p-pain1-total" style="color:var(--brand);">$0</td>
+            </tr>
+            <tr>
+              <td class="bold" id="p-pain2-name">Proceso 2</td>
+              <td class="num" id="p-pain2-personal">$0</td>
+              <td class="num" id="p-pain2-sales">$0</td>
+              <td class="num" id="p-pain2-errors">$0</td>
+              <td class="num" id="p-pain2-tool">$0</td>
+              <td class="num bold" id="p-pain2-total" style="color:var(--brand);">$0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">04</span>
+          <span class="print-sec-lbl">Matriz de Priorización Ponderada</span>
+          <span class="print-sec-tag">Decisión de Mínimo Viable (MVP)</span>
+        </div>
+
+        <table class="print-priority-table">
+          <thead>
+            <tr style="background:#fafaf7;">
+              <th class="align-left" style="width:40%;">Criterio Metodológico</th>
+              <th style="width:10%;">Peso</th>
+              <th style="width:25%;" id="p-lbl-prio-proc1">Proceso #1</th>
+              <th style="width:25%;" id="p-lbl-prio-proc2">Proceso #2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="align-left">Criticalidad del Cuello de Botella (Facturación)</td>
+              <td>35%</td>
+              <td id="p-prio1-crit">0</td>
+              <td id="p-prio2-crit">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Velocidad de Entrega del MVP (Semana 2 No-code)</td>
+              <td>25%</td>
+              <td id="p-prio1-speed">0</td>
+              <td id="p-prio2-speed">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Liberación Directa de Horas-Hombre</td>
+              <td>20%</td>
+              <td id="p-prio1-hours">0</td>
+              <td id="p-prio2-speed2">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Mitigación de Errores Operativos (Multas SAT)</td>
+              <td>20%</td>
+              <td id="p-prio1-errors">0</td>
+              <td id="p-prio2-errors">0</td>
+            </tr>
+            <tr style="background:#e9f2fd; font-weight:bold;">
+              <td class="align-left">PUNTAJE PONDERADO FINAL (Sprint Target)</td>
+              <td>100%</td>
+              <td id="p-prio1-total" style="font-size:10px;">0 / 10</td>
+              <td id="p-prio2-total" style="font-size:10px;">0 / 10</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background:#f4f2ec; padding:8px 12px; border-left:4px solid var(--ink); margin-top:8px; font-size:8.5px;">
+          <strong>🎯 Proyecto Seleccionado:</strong> <span id="p-sprint-selected-process">Análisis documental</span>
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 2 / 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: ROI, OFERTA & FIRMAS -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>propuesta<span class="slash">/</span>comercial</h1>
+        <div class="print-hero .sub">Simulación Financiera de ROI & Sprint Blueprint</div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">05</span>
+          <span class="print-sec-lbl">Ingeniería Financiera y Simulación de ROI</span>
+          <span class="print-sec-tag">El Retorno de la IA</span>
+        </div>
+
+        <div class="print-totals-box">
+          <div class="print-totals-left">
+            Caso de Negocio Justificado (Año 1)
+            <strong>Fórmula de Productividad Fantasma</strong>
+            <div style="margin-top:6px; color:#555555;">
+              La simulación proyecta un retorno masivo aplicando un rigor del 60% de eficiencia sobre las horas liberadas, convirtiendo tiempo improductivo en facturable.
+            </div>
+          </div>
+          <div class="print-totals-right">
+            <div class="print-totals-row">
+              <span>Ahorro de Tiempo:</span>
+              <span class="bold" id="p-roi-time-saved">$0</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Ingresos Extra:</span>
+              <span class="bold" id="p-roi-sales-extra">$0</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Riesgos Evitados:</span>
+              <span class="bold" id="p-roi-risk-avoided">$0</span>
+            </div>
+            <div class="print-totals-row grand">
+              <span>Retorno (ROI):</span>
+              <span id="p-roi-percent-value" style="font-size:16px;">0%</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Payback Period:</span>
+              <span class="bold" id="p-roi-payback-value">0 meses</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">06</span>
+          <span class="print-sec-lbl">Diseño y Estructura de Precios Comercial</span>
+          <span class="print-sec-tag">Fuerza Laboral IA</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Fase / Entrega</th>
+              <th style="width:50%;">Entregables & IP</th>
+              <th class="num" style="width:20%;">Precio ($MXN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">1. AI Audit Gateway</td>
+              <td>Blueprint funcional, BPMN 2.0, análisis de dolores y retorno financiero.</td>
+              <td class="num bold">$15,000</td>
+            </tr>
+            <tr>
+              <td class="bold">2. Sprint MVP Fee</td>
+              <td>Despliegue del piloto funcional en Sandbox (3 sem), entrenamiento ADKAR.</td>
+              <td class="num bold" id="p-pricing-sprint">$60,000</td>
+            </tr>
+            <tr>
+              <td class="bold">3. Licencia Recurrente</td>
+              <td>Licenciamiento de infraestructura del agente, soporte preventivo, API tuning.</td>
+              <td class="num bold">$14,000/mes</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-size:7.5px; line-height:1.4; border:1px solid #d8d4cb; padding:6px 10px; margin-top:4px;">
+          <strong>Stack Técnico Definido:</strong> <span id="p-off-stack">Make.com, Claude 3.5 Sonnet, Notion</span><br/>
+          <strong>Métrica de Impacto:</strong> Reducción del ciclo <span id="p-off-metric"> baseline ➔ goal </span>
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-signature-block">
+          <div>
+            <h3>Datos Administrativos</h3>
+            <div class="print-sig-kv">
+              <strong>Entidad Revisora:</strong><br/>
+              aiLearning Innovación y Desarrollo Educativo SAS.<br/>
+              Emisión oficial en CDMX.
+            </div>
+          </div>
+          <div>
+            <h3>Firma Consultor aiLearning</h3>
+            <div class="print-sig-line" id="p-sig-consultor">Firma de Dirección Técnica</div>
+            <div style="height:20px; border-bottom:1px solid #000000;"></div>
+          </div>
+          <div>
+            <h3>Firma del Cliente</h3>
+            <div class="print-sig-line" id="p-sig-cliente">Representante PyME</div>
+            <div style="height:20px; border-bottom:1px solid #000000;"></div>
+          </div>
+        </div>
+
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 3 / 3</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Client-side Logic Script files -->
+  <script src="/js/formulas.js"></script>
+  <script src="/js/client.js"></script>
+</body>
+</html>

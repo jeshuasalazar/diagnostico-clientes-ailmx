@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aiLearning — AI Audit Gateway Workspace</title>
+  <!-- Google Font & Styling -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Chart.js CDN for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- html2pdf.js CDN for optional single-click client PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- ================================================================
+       SCREEN INTERFACE (App Container)
+       ================================================================ -->
+  <div id="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a href="#" onclick="showStep(0)" class="brand">
+        <div class="brand-logo">ai</div>
+        <div class="brand-text">
+          <span class="brand-title">aiLEARNING</span>
+          <span class="brand-sub">workspace</span>
+        </div>
+      </a>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" id="nav-step-0">
+          <button onclick="showStep(0)">
+            <span class="step-num">00</span>
+            <span>Inicio / Historial</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-1">
+          <button onclick="showStep(1)">
+            <span class="step-num">01</span>
+            <span>Datos del Negocio</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-2">
+          <button onclick="showStep(2)">
+            <span class="step-num">02</span>
+            <span>Identificar Dolores</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-3">
+          <button onclick="showStep(3)">
+            <span class="step-num">03</span>
+            <span>Cuantificar Dolor</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-4">
+          <button onclick="showStep(4)">
+            <span class="step-num">04</span>
+            <span>Matriz Priorización</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-5">
+          <button onclick="showStep(5)">
+            <span class="step-num">05</span>
+            <span>Simulación ROI</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-6">
+          <button onclick="showStep(6)">
+            <span class="step-num">06</span>
+            <span>Diseño de Oferta</span>
+          </button>
+        </li>
+        <li class="nav-item" id="nav-step-7">
+          <button onclick="showStep(7)">
+            <span class="step-num">07</span>
+            <span>Dashboard Final</span>
+          </button>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <p><strong>Consultor Activo</strong></p>
+        <p id="active-consultant-name">aiLearning Team</p>
+        <p style="margin-top:8px; opacity:0.6;">v2.0 — Operación</p>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="content-wrapper">
+      
+      <!-- Top Action Bar -->
+      <div class="header-row">
+        <div class="page-title-area">
+          <h2 id="workspace-title">Historial de Diagnósticos</h2>
+          <p id="workspace-subtitle">Auditorías Operativas de Inteligencia Artificial</p>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" onclick="resetFormToNew()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Nuevo Diagnóstico</button>
+          <button class="btn btn-primary" id="btn-save-diagnostico" onclick="saveCurrentDiagnostic()" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Guardar Progreso</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 0: HISTORICAL LIST & WORKSPACE HOME
+           ========================================== -->
+      <div class="step-pane active" id="pane-step-0">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>Diagnósticos Guardados</h3>
+            <span class="card-subtitle">Base de datos local</span>
+          </div>
+          <div class="diag-list" id="diagnostics-list-container">
+            <div class="empty-state">
+              <h3>Cargando diagnósticos...</h3>
+              <p>Conectando con el servidor local SQLite.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 1: DATOS DEL NEGOCIO
+           ========================================== -->
+      <div class="step-pane" id="pane-step-1" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>01. Datos Comerciales del Cliente</h3>
+            <span class="card-subtitle">Fase Pre-fill / Llenado Inicial</span>
+          </div>
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="f-empresa">Nombre Comercial de la Empresa *</label>
+              <input type="text" id="f-empresa" class="form-control" placeholder="Ej. Bufete Jurídico CDMX" required>
+            </div>
+            <div class="form-group">
+              <label for="f-giro">Vertical / Giro Comercial *</label>
+              <select id="f-giro" class="form-control" onchange="handleGiroChange(this.value)">
+                <option value="">Seleccione una vertical comercial...</option>
+                <option value="Legal">⚖️ Despachos Legales / Abogados</option>
+                <option value="Contabilidad">🧾 Contabilidad / Auditoría / Despachos Fiscales</option>
+                <option value="Consultoria">💼 Consultoría / Agencias de Servicios / Marketing</option>
+                <option value="Clinicas">🏥 Clínicas / Consultorios / Estéticas / Spa</option>
+                <option value="Restaurantes">🍽️ Restaurantes / Alimentos</option>
+                <option value="Escuelas">🎓 Escuelas / Centros de Capacitación</option>
+                <option value="Inmobiliarias">🏗️ Inmobiliarias / Bienes Raíces</option>
+                <option value="Retail">🛒 Retail / E-commerce / Tiendas en Línea</option>
+                <option value="Otro">⚙️ Otro Giro / Personalizado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-4">
+            <div class="form-group">
+              <label for="f-contacto">Nombre del Contacto</label>
+              <input type="text" id="f-contacto" class="form-control" placeholder="Ej. Ing. Alejandro Ruiz">
+            </div>
+            <div class="form-group">
+              <label for="f-cargo">Cargo del Contacto</label>
+              <input type="text" id="f-cargo" class="form-control" placeholder="Ej. Director General / CFO">
+            </div>
+            <div class="form-group">
+              <label for="f-consultor">Consultor aiLearning</label>
+              <input type="text" id="f-consultor" class="form-control" placeholder="Nombre del consultor">
+            </div>
+            <div class="form-group">
+              <label for="f-fecha">Fecha de Sesión</label>
+              <input type="date" id="f-fecha" class="form-control">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="f-ciudad">Ciudad / Estado</label>
+              <input type="text" id="f-ciudad" class="form-control" placeholder="Ej. Monterrey, Nuevo León">
+            </div>
+            <div class="form-group">
+              <label for="f-operando">Años Operando</label>
+              <input type="number" id="f-operando" class="form-control" placeholder="Años en el mercado">
+            </div>
+          </div>
+
+          <div class="grid-4">
+            <div class="form-group">
+              <label for="f-empleados-total">Total Empleados</label>
+              <input type="number" id="f-empleados-total" class="form-control" placeholder="Ej. 25">
+            </div>
+            <div class="form-group">
+              <label for="f-empleados-admin">Empleados Operaciones/Admin</label>
+              <input type="number" id="f-empleados-admin" class="form-control" placeholder="Ej. 8">
+            </div>
+            <div class="form-group">
+              <label for="f-ticket">Ticket Promedio por Cliente ($MXN)</label>
+              <input type="number" id="f-ticket" class="form-control" placeholder="Ej. 12000" oninput="triggerRecalcs()">
+            </div>
+            <div class="form-group">
+              <label for="f-transacciones">Clientes / Transacciones al Mes</label>
+              <input type="number" id="f-transacciones" class="form-control" placeholder="Ej. 80">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="f-facturacion">Facturación Mensual Aprox. ($MXN)</label>
+              <input type="number" id="f-facturacion" class="form-control" placeholder="Facturación actual">
+            </div>
+            <div class="form-group">
+              <label for="f-meta-facturacion">Meta de Facturación Mensual ($MXN)</label>
+              <input type="number" id="f-meta-facturacion" class="form-control" placeholder="Objetivo deseado">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Canales de Venta y Comunicación Actuales</label>
+            <div class="grid-4" style="margin-top:4px;">
+              <label class="checkbox-group">
+                <input type="checkbox" id="chan-wa">
+                <span>WhatsApp Business</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="chan-ig">
+                <span>Instagram / Facebook</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="chan-tel">
+                <span>Teléfono / Llamadas</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="chan-web">
+                <span>Página Web / E-commerce</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="f-crm">CRM Utilizado Actualmente</label>
+              <input type="text" id="f-crm" class="form-control" placeholder="Ej. HubSpot, Salesforce, o No tienen">
+            </div>
+            <div class="form-group">
+              <label for="f-erp">ERP / Software Contable / Facturación</label>
+              <input type="text" id="f-erp" class="form-control" placeholder="Ej. ASPEL, Contpaqi, o No tienen">
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(0)">Regresar al Inicio</button>
+          <button class="btn btn-primary" onclick="showStep(2)">Siguiente: Dolores de la Vertical</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 2: IDENTIFICACIÓN DE DOLORES
+           ========================================== -->
+      <div class="step-pane" id="pane-step-2" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>02. Identificación de Cuellos de Botella por Vertical</h3>
+            <span class="card-subtitle">Filtro de Fricciones & Diagnóstico de Procesos</span>
+          </div>
+
+          <div id="vertical-not-selected-message" class="empty-state">
+            <h3>Primero seleccione una vertical</h3>
+            <p>Por favor, regrese a la Sección 1 y elija la vertical de negocio del cliente para cargar sus cuellos de botella característicos.</p>
+          </div>
+
+          <div id="vertical-active-pane" style="display:none; display:flex; flex-direction:column; gap:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <p>Vertical Activa: <strong id="active-vertical-label" class="badge-total">Legal</strong></p>
+              <span class="kpi-label">Marcar los cuellos de botella que aplican al negocio</span>
+            </div>
+
+            <!-- List of bottlenecks dynamic checkboxes container -->
+            <div class="bottlenecks-list" id="bottlenecks-checkboxes-container">
+              <!-- Rendered dynamically by javascript -->
+            </div>
+
+            <!-- Reference Case Box -->
+            <div class="vertical-ref-box">
+              <div class="ref-item">
+                <strong>📌 Caso de Referencia</strong>
+                <span id="ref-case-text">Caso</span>
+              </div>
+              <div class="ref-item">
+                <strong>📊 Métrica Objetivo</strong>
+                <span id="ref-metric-text">Métrica</span>
+              </div>
+              <div class="ref-item">
+                <strong>💸 Inversión que Sustituye</strong>
+                <span id="ref-replace-text">Sustitución</span>
+              </div>
+            </div>
+
+            <!-- Customized / Extra Bottleneck Section -->
+            <div class="form-group" style="border-top:1px solid var(--line-soft); padding-top:20px;">
+              <label>¿Desea ingresar un caso de referencia o métricas personalizadas para esta sesión?</label>
+              <div class="grid-3" style="margin-top:8px;">
+                <div class="form-group">
+                  <label for="cust-ref-case">Caso de Éxito Personalizado</label>
+                  <input type="text" id="cust-ref-case" class="form-control" placeholder="Ej. Empresa Alfa — Automatización n8n">
+                </div>
+                <div class="form-group">
+                  <label for="cust-metric">Métrica Objetivo</label>
+                  <input type="text" id="cust-metric" class="form-control" placeholder="Ej. Reducir ciclo de 3 días a < 1 hora">
+                </div>
+                <div class="form-group">
+                  <label for="cust-replace">Inversión Mensual Reemplazada</label>
+                  <input type="text" id="cust-replace" class="form-control" placeholder="Ej. SDR Junior ($15,000 MXN/mes)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(1)">Atrás</button>
+          <button class="btn btn-primary" onclick="showStep(3)">Siguiente: Cuantificación del Dolor ($MXN)</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 3: CUANTIFICACIÓN DEL DOLOR ($MXN)
+           ========================================== -->
+      <div class="step-pane" id="pane-step-3" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>03. Conversión de Dolores a Números ($MXN Anual)</h3>
+            <span class="card-subtitle">Cuantificación Financiera</span>
+          </div>
+
+          <p class="kpi-meta" style="margin-bottom:12px;">Selecciona y cuantifica los <strong>2 procesos con mayor cuello de botella</strong> de la sección anterior para justificar el caso de negocio.</p>
+
+          <div class="grid-2">
+            
+            <!-- PROCESO 1 -->
+            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 class="card-subtitle" style="color:var(--brand); font-size:12px; font-weight:700;">PROCESO / DOLOR #1</h4>
+                <span class="badge-total" id="pain-1-annual-badge">$0 / año</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="pain-1-name">Nombre del Proceso #1</label>
+                <input type="text" id="pain-1-name" class="form-control" placeholder="Ej. Análisis manual de contratos" oninput="syncPrintData()">
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label for="pain-1-hours">Horas / Sem</label>
+                  <input type="number" id="pain-1-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-1-persons">Personas</label>
+                  <input type="number" id="pain-1-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-1-cost-hr">Costo / Hr ($)</label>
+                  <input type="number" id="pain-1-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-1-leads">Leads Perdidos/Mes</label>
+                  <input type="number" id="pain-1-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-1-ticket">Valor de Lead ($)</label>
+                  <input type="number" id="pain-1-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-1-errors">Multas/Errores/Mes ($)</label>
+                  <input type="number" id="pain-1-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-1-tool">Costo Herramienta/Mes ($)</label>
+                  <input type="number" id="pain-1-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+            </div>
+
+            <!-- PROCESO 2 -->
+            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 class="card-subtitle" style="color:var(--coral); font-size:12px; font-weight:700;">PROCESO / DOLOR #2</h4>
+                <span class="badge-total coral" id="pain-2-annual-badge">$0 / año</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="pain-2-name">Nombre del Proceso #2</label>
+                <input type="text" id="pain-2-name" class="form-control" placeholder="Ej. Captura manual de XMLs SAT" oninput="syncPrintData()">
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label for="pain-2-hours">Horas / Sem</label>
+                  <input type="number" id="pain-2-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-2-persons">Personas</label>
+                  <input type="number" id="pain-2-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-2-cost-hr">Costo / Hr ($)</label>
+                  <input type="number" id="pain-2-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-2-leads">Leads Perdidos/Mes</label>
+                  <input type="number" id="pain-2-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-2-ticket">Valor de Lead ($)</label>
+                  <input type="number" id="pain-2-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-2-errors">Multas/Errores/Mes ($)</label>
+                  <input type="number" id="pain-2-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-2-tool">Costo Herramienta/Mes ($)</label>
+                  <input type="number" id="pain-2-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(2)">Atrás</button>
+          <button class="btn btn-primary" onclick="showStep(4)">Siguiente: Matriz de Priorización</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 4: MATRIZ DE PRIORIZACIÓN
+           ========================================== -->
+      <div class="step-pane" id="pane-step-4" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>04. Matriz de Priorización Ponderada</h3>
+            <span class="card-subtitle">Decisión de Negocio para el Sprint MVP</span>
+          </div>
+
+          <p class="kpi-meta" style="margin-bottom:12px;">Califica cada proceso prioritario de la sección anterior del **1 al 10** en cada criterio para encontrar el caso de uso con mayor puntaje.</p>
+
+          <div class="table-responsive">
+            <table class="brand-table">
+              <thead>
+                <tr>
+                  <th style="width:40%;">Criterio de Priorización</th>
+                  <th style="width:10%; text-align:center;">Peso</th>
+                  <th style="width:25%; text-align:center;">PROCESO #1 (Calif. 1-10)</th>
+                  <th style="width:25%; text-align:center;">PROCESO #2 (Calif. 1-10)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="concept">Criticalidad del Cuello de Botella</span>
+                    <span class="sub">¿Frena directamente la facturación del negocio?</span>
+                  </td>
+                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">35%</td>
+                  <td>
+                    <input type="number" id="prio-1-crit" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="8">
+                  </td>
+                  <td>
+                    <input type="number" id="prio-2-crit" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="6">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="concept">Velocidad de Entrega del MVP</span>
+                    <span class="sub">¿Puede construirse en Make/n8n sin código complejo en la Semana 2?</span>
+                  </td>
+                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">25%</td>
+                  <td>
+                    <input type="number" id="prio-1-speed" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="7">
+                  </td>
+                  <td>
+                    <input type="number" id="prio-2-speed" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="9">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="concept">Liberación Directa de Horas-Hombre</span>
+                    <span class="sub">¿Reasigna el personal administrativo a tareas facturables reales?</span>
+                  </td>
+                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">20%</td>
+                  <td>
+                    <input type="number" id="prio-1-hours" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="9">
+                  </td>
+                  <td>
+                    <input type="number" id="prio-2-hours" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="5">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="concept">Mitigación de Errores Operativos</span>
+                    <span class="sub">¿Previene multas SAT, penalizaciones contractuales o fugas?</span>
+                  </td>
+                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">20%</td>
+                  <td>
+                    <input type="number" id="prio-1-errors" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="5">
+                  </td>
+                  <td>
+                    <input type="number" id="prio-2-errors" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="8">
+                  </td>
+                </tr>
+                <tr style="background:var(--brand-soft); font-weight:700;">
+                  <td class="concept">PUNTAJE TOTAL PONDERADO</td>
+                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">100%</td>
+                  <td style="text-align:center; font-size:16px; font-family:'JetBrains Mono',monospace; color:var(--brand-deep);" id="prio-1-total-score">7.55 / 10</td>
+                  <td style="text-align:center; font-size:16px; font-family:'JetBrains Mono',monospace; color:var(--coral);" id="prio-2-total-score">6.85 / 10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Process Selection Radio -->
+          <div class="form-group" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--line-soft);">
+            <label style="font-size:14px;">🎯 Proceso Seleccionado Exclusivo para el Sprint MVP</label>
+            <div class="grid-2" style="margin-top:10px;">
+              <label class="checkbox-group" style="padding:16px;">
+                <input type="radio" name="selected-sprint-process" value="1" checked onchange="triggerRecalcs()">
+                <div>
+                  <strong style="display:block; font-size:13.5px;" id="lbl-radio-proc1">Proceso #1</strong>
+                  <span style="font-size:11.5px; color:var(--mute);">Recomendado por puntuación ponderada</span>
+                </div>
+              </label>
+              <label class="checkbox-group" style="padding:16px;">
+                <input type="radio" name="selected-sprint-process" value="2" onchange="triggerRecalcs()">
+                <div>
+                  <strong style="display:block; font-size:13.5px;" id="lbl-radio-proc2">Proceso #2</strong>
+                  <span style="font-size:11.5px; color:var(--mute);">Prioridad operativa alternativa</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(3)">Atrás</button>
+          <button class="btn btn-primary" onclick="showStep(5)">Siguiente: Simulación de ROI</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 5: SIMULACIÓN DE ROI
+           ========================================== -->
+      <div class="step-pane" id="pane-step-5" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>05. Ingeniería Financiera y Simulación de ROI</h3>
+            <span class="card-subtitle">Caso de Negocio Justificado en Pesos ($MXN)</span>
+          </div>
+
+          <p class="kpi-meta" style="margin-bottom:12px;">Llene los parámetros de conversión comercial y costos del Sprint MVP para proyectar el retorno de inversión detallado.</p>
+
+          <div class="grid-2">
+            
+            <!-- Left inputs panel -->
+            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px; box-shadow:none;">
+              <h4 class="card-subtitle" style="font-weight:700; color:var(--ink);">A) Parámetros del Retorno Financiero</h4>
+              
+              <div class="form-group">
+                <label for="roi-leads-rec">Leads / Oportunidades Recuperadas al Mes</label>
+                <input type="number" id="roi-leads-rec" class="form-control" placeholder="Ej. 3" value="2" oninput="triggerRecalcs()">
+              </div>
+
+              <div class="form-group">
+                <label for="roi-margin-net">Margen Neto de la Empresa (%)</label>
+                <input type="number" id="roi-margin-net" class="form-control" placeholder="Ej. 25" value="25" oninput="triggerRecalcs()">
+              </div>
+
+              <div class="form-group">
+                <label for="roi-risk-evited">Costo de Riesgo Contable/Multas SAT Evitado ($/año)</label>
+                <input type="number" id="roi-risk-evited" class="form-control" placeholder="Ej. 30000" value="0" oninput="triggerRecalcs()">
+              </div>
+
+              <div class="form-group">
+                <label for="roi-sprint-fee">Upfront Sprint Fee del MVP ($MXN) *</label>
+                <input type="number" id="roi-sprint-fee" class="form-control" placeholder="Monto del Sprint de Desarrollo" value="60000" oninput="triggerRecalcs()">
+                <span class="kpi-label" style="font-size:10px; margin-top:2px;">Rango metodológico: $45,000 a $90,000 MXN</span>
+              </div>
+            </div>
+
+            <!-- Right results preview -->
+            <div class="card" style="background:var(--brand-soft); border-color:var(--brand); padding:24px; gap:16px; box-shadow:none;">
+              <h4 class="card-subtitle" style="font-weight:700; color:var(--brand-deep);">B) Resultados de la Simulación</h4>
+              
+              <div class="roi-breakdown-box" style="grid-template-columns:1fr; background:var(--white); border:none; padding:18px; box-shadow:var(--shadow);">
+                <div class="numbers" style="gap:12px;">
+                  <div class="roi-breakdown-row">
+                    <span>Ahorro Tiempo (60% Prod. Fantasma):</span>
+                    <strong id="res-roi-time-saved" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Ingresos Extra por Conversión:</span>
+                    <strong id="res-roi-sales-extra" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Riesgos Operativos Evitados:</span>
+                    <strong id="res-roi-risk-avoided" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
+                  </div>
+                  <div class="roi-breakdown-row" style="border-top:1px dashed var(--line); padding-top:8px;">
+                    <span>Total Beneficios Anuales (A):</span>
+                    <strong id="res-roi-benefits-total" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Costo Total de Propiedad TCO (B):</span>
+                    <strong id="res-roi-tco-total" style="color:var(--coral); font-family:'IBM Plex Mono',monospace;">$0</strong>
+                  </div>
+                  <div class="roi-breakdown-row grand-total" style="border-top:2px solid var(--ink); padding-top:10px;">
+                    <span>Retorno Anual (ROI %):</span>
+                    <strong id="res-roi-percent-value" style="font-family:'Space Grotesk',sans-serif; font-size:22px; color:var(--brand-deep);">0%</strong>
+                  </div>
+                  <div class="roi-breakdown-row">
+                    <span>Periodo de Recuperación:</span>
+                    <strong id="res-roi-payback-value" style="font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--ink);">0 meses</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(4)">Atrás</button>
+          <button class="btn btn-primary" onclick="showStep(6)">Siguiente: Diseño de la Oferta</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 6: DISEÑO DE LA OFERTA
+           ========================================== -->
+      <div class="step-pane" id="pane-step-6" style="display:none;">
+        <div class="card">
+          <div class="card-title-group">
+            <h3>06. Diseño y Presentación de la Oferta</h3>
+            <span class="card-subtitle">Blueprint Comercial del Agente IA</span>
+          </div>
+
+          <div class="form-group">
+            <label for="off-solution-name">Nombre de la Solución Propuesta *</label>
+            <input type="text" id="off-solution-name" class="form-control" placeholder="Ej. Agente Documental y Calificación de Leads IA" value="Sistema de Fuerza Laboral IA">
+          </div>
+
+          <div class="form-group">
+            <label>Herramientas No-Code / Low-Code a Utilizar</label>
+            <div class="grid-4" style="margin-top:4px;">
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-make" checked>
+                <span>Make.com</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-n8n">
+                <span>n8n</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-claude" checked>
+                <span>Claude API</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-gpt">
+                <span>GPT-4o</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-wa" checked>
+                <span>WhatsApp Business API</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-notion" checked>
+                <span>Notion / Airtable</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-vapi">
+                <span>Vapi / Retell</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="tool-hubspot">
+                <span>HubSpot / GSheets</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Stack Técnico del Agente a Desplegar</label>
+            <div class="grid-4" style="margin-top:4px;">
+              <label class="checkbox-group">
+                <input type="checkbox" id="stack-conv">
+                <span>Agente Conversacional</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="stack-doc" checked>
+                <span>Agente Documental (RAG/OCR)</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="stack-orchestr">
+                <span>Multi-Agente Orquestado</span>
+              </label>
+              <label class="checkbox-group">
+                <input type="checkbox" id="stack-backend" checked>
+                <span>Procesos Backend</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="off-metric-name">Nombre de la Métrica Principal</label>
+              <input type="text" id="off-metric-name" class="form-control" placeholder="Ej. Tiempo de revisión por exp." value="Tiempo de ciclo">
+            </div>
+            <div class="form-group">
+              <label for="off-metric-base">Valor Actual (Baseline)</label>
+              <input type="text" id="off-metric-base" class="form-control" placeholder="Ej. 4 horas por expediente" value="Horas">
+            </div>
+            <div class="form-group">
+              <label for="off-metric-goal">Meta con IA (Año 1)</label>
+              <input type="text" id="off-metric-goal" class="form-control" placeholder="Ej. < 30 minutos por expediente" value="< 30 min">
+            </div>
+          </div>
+
+          <div class="grid-2" style="border-top:1px solid var(--line-soft); padding-top:20px;">
+            <div class="form-group">
+              <label for="off-sig-consultor">Nombre de Firma Consultor aiLearning</label>
+              <input type="text" id="off-sig-consultor" class="form-control" placeholder="Nombre del consultor" value="aiLearning Team">
+            </div>
+            <div class="form-group">
+              <label for="off-sig-cliente">Nombre de Firma del Cliente</label>
+              <input type="text" id="off-sig-cliente" class="form-control" placeholder="Representante de la PyME">
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(5)">Atrás</button>
+          <button class="btn btn-primary btn-dark" onclick="saveAndGoToDashboard()">💾 Finalizar Diagnóstico y Ver Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 7: DASHBOARD DE CONTROL (CONSULTOR VIEW)
+           ========================================== -->
+      <div class="step-pane" id="pane-step-7" style="display:none;">
+        
+        <!-- Live Synchronize Banner -->
+        <div class="roi-breakdown-box" style="background:var(--white); border-color:var(--brand); display:flex; justify-content:space-between; padding:18px;">
+          <div>
+            <h4 class="concept">🔗 Enlace Único de la Sesión del Cliente</h4>
+            <span class="sub" style="font-size:12px; margin-top:2px;">Copia este enlace para enviárselo a tu cliente en la llamada o subirlo a la plataforma.</span>
+          </div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <input type="text" id="shareable-client-url" class="form-control" readonly style="width:360px; font-family:'JetBrains Mono',monospace; font-size:11px;" value="">
+            <button class="btn btn-primary" onclick="copyClientURL()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar Link</button>
+          </div>
+        </div>
+
+        <!-- Dashboard KPI Summary Cards -->
+        <div class="kpi-row">
+          <div class="kpi-card ink">
+            <div class="kpi-label">Dolor Anual Evitado</div>
+            <div class="kpi-value" id="dash-pain-total" style="color:var(--brand);">$0</div>
+            <div class="kpi-meta">Cuellos de botella cuantificados</div>
+          </div>
+          <div class="kpi-card sage">
+            <div class="kpi-label">Total Beneficios Anuales</div>
+            <div class="kpi-value" id="dash-benefits-total">$0</div>
+            <div class="kpi-meta">Ingresos + Horas liberadas</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Retorno Inversión (ROI)</div>
+            <div class="kpi-value" id="dash-roi-percent" style="color:var(--brand-deep);">0%</div>
+            <div class="kpi-meta">Tasa interna de retorno (TCO)</div>
+          </div>
+          <div class="kpi-card coral">
+            <div class="kpi-label">Payback Period</div>
+            <div class="kpi-value" id="dash-payback-months">0 meses</div>
+            <div class="kpi-meta">Tiempo de recuperación de inversión</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          
+          <!-- Chart Visual Panel -->
+          <div class="card">
+            <div class="card-title-group">
+              <h3>Matriz de Prioridades Operativas</h3>
+              <span class="card-subtitle">Análisis de Restricciones</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="priority-radar-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Proposal Pricing Summary Card -->
+          <div class="card" style="gap:16px;">
+            <div class="card-title-group">
+              <h3>Inversión de la Solución IA</h3>
+              <span class="card-subtitle">Estructura Comercial Fija</span>
+            </div>
+            
+            <div class="numbers" style="display:flex; flex-direction:column; gap:12px; font-size:13px;">
+              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
+                <span><strong>Fase 1: AI Audit Gateway</strong></span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;">$15,000 MXN</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
+                <span><strong>Fase 2: Sprint MVP Fee (Sandbox)</strong></span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;" id="dash-pricing-sprint">$60,000 MXN</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
+                <span><strong>Fase 3: Licencia Mensual Recurrente</strong></span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;">$14,000 MXN / mes</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; background:var(--brand-soft); padding:10px 14px; border-radius:8px; margin-top:8px;">
+                <strong>Métrica Clave: <span id="dash-metric-name">Tiempo</span></strong>
+                <span style="font-weight:700;"><span id="dash-metric-base">0</span> ➔ <span id="dash-metric-goal">0</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-group">
+            <h3>Cronograma de Próximos Pasos (Ciclo Solopreneur de 3 Semanas)</h3>
+            <span class="card-subtitle">Estrategia ADKAR y Despliegue</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="timeline">
+              <div class="timeline-item completed">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Fase 1: AI Audit Gateway (Mapeo BPMN 2.0 y Caso de Negocio)</div>
+                <div class="timeline-meta">
+                  <span>Responsable: Cliente & aiLearning</span>
+                  <span>Estatus: Completado</span>
+                </div>
+              </div>
+              <div class="timeline-item active">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Paso 1: Pago verificado de Auditoría y Mapeo en vivo de Gemba</div>
+                <div class="timeline-meta">
+                  <span>Responsable: Cliente</span>
+                  <span>Fecha Límite: Día 1 del Sprint</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Paso 2: Entrega de Blueprint Técnico y Aprobación del Sprint Fee</div>
+                <div class="timeline-meta">
+                  <span>Responsable: aiLearning & Cliente</span>
+                  <span>Fecha Límite: Día 5 del Sprint</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Paso 3: Desarrollo en Escenario Sandbox y Carga RAG Vectorial</div>
+                <div class="timeline-meta">
+                  <span>Responsable: aiLearning</span>
+                  <span>Fecha Límite: Semana 2</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Paso 4: Capacitación al equipo (ADKAR - Knowledge) y Piloto en vivo</div>
+                <div class="timeline-meta">
+                  <span>Responsable: aiLearning & Personal Cliente</span>
+                  <span>Fecha Límite: Semana 3</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Paso 5: Cierre del Sprint, Auditoría de Ciclos y Oferta de Producción</div>
+                <div class="timeline-meta">
+                  <span>Responsable: Consultor aiLearning</span>
+                  <span>Fecha Límite: Día 15 del Sprint</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation" style="justify-content:center; gap:20px;">
+          <button class="btn btn-secondary" onclick="showStep(6)">Editar Datos</button>
+          <button class="btn btn-primary" onclick="triggerNativePrint()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18h12v4H6zM6 14H4a2 2 0 0 1-2-2V11a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/></svg> Imprimir / Guardar PDF Oficial</button>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ================================================================
+       HIGH-FIDELITY PRINTABLE DOCUMENT TEMPLATE (PDF EXPORT ONLY)
+       ================================================================ -->
+  <div id="print-container">
+    
+    <!-- PAGE 1: COVER, DATOS & DOLORES -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>ai audit gateway<span class="slash">/</span>report</h1>
+        <div class="print-hero .sub">Auditoría Operativa de Inteligencia Artificial & Negocios</div>
+      </div>
+
+      <div class="print-meta-grid">
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Proyecto</div>
+          <div class="print-meta-v"><strong id="p-meta-folio">AG-2026</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Empresa</div>
+          <div class="print-meta-v"><strong id="p-meta-empresa">Empresa</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Vertical</div>
+          <div class="print-meta-v"><strong id="p-meta-giro">Vertical</strong></div>
+        </div>
+        <div class="print-meta-cell">
+          <div class="print-meta-k">Consultor</div>
+          <div class="print-meta-v"><strong id="p-meta-consultor">Consultor</strong></div>
+        </div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">01</span>
+          <span class="print-sec-lbl">Información del Negocio y Diagnóstico Inicial</span>
+          <span class="print-sec-tag">Datos Comerciales</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Concepto Operativo</th>
+              <th style="width:30%;">Valor Comercial</th>
+              <th style="width:40%;">Tecnología & Canales</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">Contacto y Cargo:</td>
+              <td id="p-dat-contacto">Contacto (Cargo)</td>
+              <td><strong>CRM:</strong> <span id="p-dat-crm">HubSpot</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Ubicación y Antigüedad:</td>
+              <td id="p-dat-ciudad">Ciudad, Años Operando</td>
+              <td><strong>ERP:</strong> <span id="p-dat-erp">ERP</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Estructura Organizativa:</td>
+              <td id="p-dat-empleados">Empleados en Operaciones</td>
+              <td><strong>Canales:</strong> <span id="p-dat-canales">WA, Web</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Métricas Financieras Base:</td>
+              <td id="p-dat-metrics">Ticket y Transacciones</td>
+              <td><strong>Facturación:</strong> <span id="p-dat-facturacion">Actual vs Meta</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">02</span>
+          <span class="print-sec-lbl">Cuellos de Botella Identificados por Vertical</span>
+          <span class="print-sec-tag">Fricciones de Negocio</span>
+        </div>
+
+        <div id="print-bottlenecks-list-container" style="display:flex; flex-direction:column; gap:6px; font-size:8.5px; font-family:'JetBrains Mono',monospace;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 1 / 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: CUANTIFICACIÓN & PRIORIZACIÓN -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>financiero<span class="slash">/</span>análisis</h1>
+        <div class="print-hero .sub">Cuantificación del Dolor & Matriz de Prioridad</div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">03</span>
+          <span class="print-sec-lbl">Cuantificación Anual del Dolor ($MXN)</span>
+          <span class="print-sec-tag">El costo de la fricción</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Dolor / Proceso Evaluado</th>
+              <th class="num" style="width:15%;">Costo Personal</th>
+              <th class="num" style="width:15%;">Oportunidad Fuga</th>
+              <th class="num" style="width:15%;">Errores / Multas</th>
+              <th class="num" style="width:15%;">SaaS Actual</th>
+              <th class="num" style="width:10%;">Total Anual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold" id="p-pain1-name">Proceso 1</td>
+              <td class="num" id="p-pain1-personal">$0</td>
+              <td class="num" id="p-pain1-sales">$0</td>
+              <td class="num" id="p-pain1-errors">$0</td>
+              <td class="num" id="p-pain1-tool">$0</td>
+              <td class="num bold" id="p-pain1-total" style="color:var(--brand);">$0</td>
+            </tr>
+            <tr>
+              <td class="bold" id="p-pain2-name">Proceso 2</td>
+              <td class="num" id="p-pain2-personal">$0</td>
+              <td class="num" id="p-pain2-sales">$0</td>
+              <td class="num" id="p-pain2-errors">$0</td>
+              <td class="num" id="p-pain2-tool">$0</td>
+              <td class="num bold" id="p-pain2-total" style="color:var(--brand);">$0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">04</span>
+          <span class="print-sec-lbl">Matriz de Priorización Ponderada</span>
+          <span class="print-sec-tag">Decisión de Mínimo Viable (MVP)</span>
+        </div>
+
+        <table class="print-priority-table">
+          <thead>
+            <tr style="background:#fafaf7;">
+              <th class="align-left" style="width:40%;">Criterio Metodológico</th>
+              <th style="width:10%;">Peso</th>
+              <th style="width:25%;" id="p-lbl-prio-proc1">Proceso #1</th>
+              <th style="width:25%;" id="p-lbl-prio-proc2">Proceso #2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="align-left">Criticalidad del Cuello de Botella (Facturación)</td>
+              <td>35%</td>
+              <td id="p-prio1-crit">0</td>
+              <td id="p-prio2-crit">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Velocidad de Entrega del MVP (Semana 2 No-code)</td>
+              <td>25%</td>
+              <td id="p-prio1-speed">0</td>
+              <td id="p-prio2-speed">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Liberación Directa de Horas-Hombre</td>
+              <td>20%</td>
+              <td id="p-prio1-hours">0</td>
+              <td id="p-prio2-speed2">0</td>
+            </tr>
+            <tr>
+              <td class="align-left">Mitigación de Errores Operativos (Multas SAT)</td>
+              <td>20%</td>
+              <td id="p-prio1-errors">0</td>
+              <td id="p-prio2-errors">0</td>
+            </tr>
+            <tr style="background:#e9f2fd; font-weight:bold;">
+              <td class="align-left">PUNTAJE PONDERADO FINAL (Sprint Target)</td>
+              <td>100%</td>
+              <td id="p-prio1-total" style="font-size:10px;">0 / 10</td>
+              <td id="p-prio2-total" style="font-size:10px;">0 / 10</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background:#f4f2ec; padding:8px 12px; border-left:4px solid var(--ink); margin-top:8px; font-size:8.5px;">
+          <strong>🎯 Proyecto Seleccionado:</strong> <span id="p-sprint-selected-process">Análisis documental</span>
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 2 / 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: ROI, OFERTA & FIRMAS -->
+    <div class="print-page">
+      <div class="print-hero">
+        <div class="print-hero-row">
+          <div class="print-hero-logo">ai LEARNING</div>
+          <div class="print-hero-stamp">Blueprint · Diagnóstico</div>
+        </div>
+        <h1>propuesta<span class="slash">/</span>comercial</h1>
+        <div class="print-hero .sub">Simulación Financiera de ROI & Sprint Blueprint</div>
+      </div>
+
+      <div class="print-body">
+        <div class="print-sec">
+          <span class="print-sec-num">05</span>
+          <span class="print-sec-lbl">Ingeniería Financiera y Simulación de ROI</span>
+          <span class="print-sec-tag">El Retorno de la IA</span>
+        </div>
+
+        <div class="print-totals-box">
+          <div class="print-totals-left">
+            Caso de Negocio Justificado (Año 1)
+            <strong>Fórmula de Productividad Fantasma</strong>
+            <div style="margin-top:6px; color:#555555;">
+              La simulación proyecta un retorno masivo aplicando un rigor del 60% de eficiencia sobre las horas liberadas, convirtiendo tiempo improductivo en facturable.
+            </div>
+          </div>
+          <div class="print-totals-right">
+            <div class="print-totals-row">
+              <span>Ahorro de Tiempo:</span>
+              <span class="bold" id="p-roi-time-saved">$0</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Ingresos Extra:</span>
+              <span class="bold" id="p-roi-sales-extra">$0</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Riesgos Evitados:</span>
+              <span class="bold" id="p-roi-risk-avoided">$0</span>
+            </div>
+            <div class="print-totals-row grand">
+              <span>Retorno (ROI):</span>
+              <span id="p-roi-percent-value" style="font-size:16px;">0%</span>
+            </div>
+            <div class="print-totals-row">
+              <span>Payback Period:</span>
+              <span class="bold" id="p-roi-payback-value">0 meses</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-sec" style="margin-top:14px;">
+          <span class="print-sec-num">06</span>
+          <span class="print-sec-lbl">Diseño y Estructura de Precios Comercial</span>
+          <span class="print-sec-tag">Fuerza Laboral IA</span>
+        </div>
+
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Fase / Entrega</th>
+              <th style="width:50%;">Entregables & IP</th>
+              <th class="num" style="width:20%;">Precio ($MXN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">1. AI Audit Gateway</td>
+              <td>Blueprint funcional, BPMN 2.0, análisis de dolores y retorno financiero.</td>
+              <td class="num bold">$15,000</td>
+            </tr>
+            <tr>
+              <td class="bold">2. Sprint MVP Fee</td>
+              <td>Despliegue del piloto funcional en Sandbox (3 sem), entrenamiento ADKAR.</td>
+              <td class="num bold" id="p-pricing-sprint">$60,000</td>
+            </tr>
+            <tr>
+              <td class="bold">3. Licencia Recurrente</td>
+              <td>Licenciamiento de infraestructura del agente, soporte preventivo, API tuning.</td>
+              <td class="num bold">$14,000/mes</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-size:7.5px; line-height:1.4; border:1px solid #d8d4cb; padding:6px 10px; margin-top:4px;">
+          <strong>Stack Técnico Definido:</strong> <span id="p-off-stack">Make.com, Claude 3.5 Sonnet, Notion</span><br/>
+          <strong>Métrica de Impacto:</strong> Reducción del ciclo <span id="p-off-metric"> baseline ➔ goal </span>
+        </div>
+      </div>
+
+      <div class="print-footer-wrap">
+        <div class="print-signature-block">
+          <div>
+            <h3>Datos Administrativos</h3>
+            <div class="print-sig-kv">
+              <strong>Entidad Revisora:</strong><br/>
+              aiLearning Innovación y Desarrollo Educativo SAS.<br/>
+              Emisión oficial en CDMX.
+            </div>
+          </div>
+          <div>
+            <h3>Firma Consultor aiLearning</h3>
+            <div class="print-sig-line" id="p-sig-consultor">Firma de Dirección Técnica</div>
+            <div style="height:20px; border-bottom:1px solid #000000;"></div>
+          </div>
+          <div>
+            <h3>Firma del Cliente</h3>
+            <div class="print-sig-line" id="p-sig-cliente">Representante PyME</div>
+            <div style="height:20px; border-bottom:1px solid #000000;"></div>
+          </div>
+        </div>
+
+        <div class="print-legal">
+          <span>aiLearning Innovación SAS · CDMX, México</span>
+          <span>contacto@ailearning.mx · ailearning.mx</span>
+          <span>Página 3 / 3</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Workspace JavaScript Logic File -->
+  <script src="/js/formulas.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

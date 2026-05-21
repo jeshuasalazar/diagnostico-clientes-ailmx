@@ -1,0 +1,418 @@
+AI AUDIT GATEWAY
+Formato de Diagnóstico de Necesidades de Automatización
+─────────────────────────────────────────
+Empresa / Negocio
+Giro / Sector
+Nombre del contacto
+Cargo
+Consultor aiLearning
+Fecha de sesión
+DOCUMENTO CONFIDENCIAL  —  USO EXCLUSIVO INTERNO aiLearning
+INSTRUCCIONES DE USO DEL FORMATO
+✎  ANTES DE LA SESIÓN  (Pre-fill)
+El cliente llena estas secciones:
+Sección 1 — Datos del negocio
+Sección 2 — Identificación de dolores
+Tiempo estimado: 10-15 min antes de la videollamada.
+📋  DURANTE LA SESIÓN  (45 min)
+El consultor completa con el cliente:
+Sección 3 — Cuantificación del dolor ($MXN)
+Sección 4 — Matriz de priorización
+Sección 5 — Simulación de ROI
+Sección 6 — Diseño y presentación de la oferta
+Regla de Oro: Este documento NO se entrega al cliente hasta cobrar el AI Audit Gateway ($15,000 MXN). Es el entregable de la Fase 1.
+01    DATOS DEL NEGOCIO
+Completar antes de la sesión — 10 min aprox.
+Nombre comercial: _______________________________________________
+Giro / Sector: _______________________________________________
+Ciudad / Estado: _______________________________________________
+Años operando: _______________________________________________
+Número total de empleados: _______________________________________________
+Empleados en operaciones/admin: _______________________________________________
+Ticket promedio por cliente ($MXN): _______________________________________________
+Clientes / transacciones por mes: _______________________________________________
+Facturación mensual aprox. ($MXN): _______________________________________________
+Meta de facturación mensual ($MXN): _______________________________________________
+Canales de venta y comunicación actuales:
+WhatsApp Business
+Instagram / Facebook
+Teléfono / Llamadas
+Página web / E-commerce
+Otro (especificar)
+☐ Sí   ☐ No
+☐ Sí   ☐ No
+☐ Sí   ☐ No
+☐ Sí   ☐ No
+Herramientas digitales actuales:
+CRM (¿cuál?)
+Software de facturación / ERP
+Otras herramientas relevantes
+☐ No tienen
+☐ No tienen
+02    IDENTIFICACIÓN DE DOLORES POR VERTICAL
+Marcar los cuellos de botella que aplican a su negocio — el cliente llena antes de la sesión
+Instrucciones: Marque con ✓ todos los procesos que le generan fricción, retraso o costo hoy.
+⚖️  DESPACHOS LEGALES / BUFETES DE ABOGADOS
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Análisis manual de contratos y documentos — tarda horas por expediente
+☐
+Due diligence de contratos mercantiles lento (días vs. horas requeridas)
+☐
+Redacción repetitiva de actas de asamblea, contratos tipo y arrendamientos
+☐
+Búsqueda manual de cláusulas críticas en tomos documentales
+☐
+Seguimiento de vencimientos y obligaciones contractuales sin alertas automáticas
+☐
+Pérdida de prospectos por respuesta lenta a consultas iniciales vía WhatsApp o email
+📌 Caso de referencia: Destácame (Vambe AI) — Automatizó 100% del flujo de atención al cliente; ahorro = 1 ejecutivo FTE
+📊 Métrica objetivo: Tiempo de revisión documental (meta: de horas → <30 min por expediente)
+💸 Sustituye: Abogado junior o asistente de análisis documental ($18,000–$35,000 MXN/mes)
+🧾  CONTABILIDAD / AUDITORÍA / DESPACHOS FISCALES
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Captura manual de XMLs y PDFs de facturas del SAT (>50 docs/mes)
+☐
+Conciliaciones bancarias retrasadas por carga de captura manual
+☐
+Preparación de declaraciones provisionales con datos incompletos o tardíos
+☐
+Clientes que no envían documentación a tiempo — recordatorios manuales
+☐
+Errores de captura que generan multas o requerimientos del SAT
+☐
+Armado de estados financieros que toma días en lugar de horas
+📌 Caso de referencia: Automatización OCR cognitiva (Make.com + Claude) — 80% de carga pre-captura eliminada en despachos piloto
+📊 Métrica objetivo: % de documentos procesados sin intervención humana (meta: >80% / mes)
+💸 Sustituye: Capturista / asistente contable adicional ($8,000–$15,000 MXN/mes) o software de captura manual
+💼  CONSULTORÍA / AGENCIAS DE SERVICIOS / MARKETING
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Tiempo excesivo en armar propuestas y cotizaciones (>3 hrs por propuesta)
+☐
+Leads que se enfrían por respuesta lenta (>24 hrs para primer contacto)
+☐
+No hay seguimiento automático a prospectos que no contestan de inmediato
+☐
+Calificación manual de leads — el equipo de ventas filtra sin criterio uniforme
+☐
+Producción lenta de reportes de resultados para clientes
+☐
+Pérdida de oportunidades por falta de atención fuera de horario comercial
+📌 Caso de referencia: Gestioncar (Vambe AI) — 80 leads/semana calificados automáticamente; HubSpot y Google Calendar automatizados. OptimizaPro (Vystral) — impacto visible desde semana 1
+📊 Métrica objetivo: Tasa de conversión lead → propuesta enviada en <2 hrs (meta: >70%) / Tiempo de primer contacto
+💸 Sustituye: SDR o ejecutivo de ventas adicional ($18,000–$35,000 MXN/mes) o agencia de generación de demanda
+🏥  CLÍNICAS / CONSULTORIOS / ESTÉTICAS / SPA
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Agendamiento de citas manual por WhatsApp — recepcionista saturada
+☐
+No-shows frecuentes por falta de recordatorios automáticos (>15% de citas)
+☐
+Pérdida de leads fuera de horario por no poder responder de noche o fin de semana
+☐
+Seguimiento post-consulta / post-tratamiento inexistente o manual
+☐
+Calificación de leads sin criterio — pacientes no aptos consumen tiempo del médico
+☐
+Gestión de reseñas en Google Maps sin proceso sistemático
+📌 Caso de referencia: Clibel Estéticas (Vystral) — 70% tasa de conversión lead → cita, 300–400 citas/mes automatizadas. Clínica Ramis (Vambe AI) — mensajes y agendamiento 100% automatizados
+📊 Métrica objetivo: Tasa de conversión lead → cita agendada (meta: >65%) / Reducción de no-shows (meta: <8%)
+💸 Sustituye: Recepcionista adicional ($12,000–$18,000 MXN/mes) + plataforma de citas ($500–$2,000 MXN/mes)
+🍽️  RESTAURANTES / BARES / SERVICIOS DE ALIMENTOS
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Reservas tomadas solo por teléfono — se pierden cuando está ocupada la línea
+☐
+Sin sistema de fidelización — no se comunica con clientes que ya visitaron el lugar
+☐
+Pedidos para llevar o a domicilio coordinados manualmente sin confirmación automática
+☐
+Gestión de reseñas en Google/TripAdvisor sin proceso — malas reseñas sin respuesta
+☐
+Campañas de WhatsApp para promover eventos/especiales se hacen a mano
+☐
+Sin datos de clientes recurrentes — no se sabe quién viene más ni cuánto gasta
+📌 Caso de referencia: Mesón San Diego (NOVAI) — chatbot WhatsApp 24/7 agenda reservas, flujo de nuevos clientes creció 'impresionantemente'. NOVAI Restaurantes — automatización completa de reservas y fidelización
+📊 Métrica objetivo: Ocupación media semanal (meta: +15%) / Tasa de respuesta a reseñas Google (meta: 100% en <24 hrs)
+💸 Sustituye: Hostess / recepcionista adicional ($10,000–$15,000 MXN/mes) o plataforma de reservas ($800–$2,500 MXN/mes)
+🎓  ESCUELAS / UNIVERSIDADES / CENTROS DE CAPACITACIÓN
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Respuesta lenta a solicitudes de información de prospectos — se van con la competencia
+☐
+Proceso de inscripción manual — papelería, pagos y validaciones sin automatizar
+☐
+Asesores de admisiones dedicados a responder preguntas repetitivas (costos, fechas, requisitos)
+☐
+Seguimiento a prospectos que pidieron información pero no se inscribieron
+☐
+Comunicación con alumnos actuales (pagos, eventos, calificaciones) manual o dispersa
+☐
+Sin datos de tasas de conversión por canal de captación
+📌 Caso de referencia: Universidad Adolfo Ibáñez (Vambe AI) — automatización de matrículas en piloto; ejecutivas de admisiones redirigidas a prospectos de mayor valor
+📊 Métrica objetivo: Tasa de conversión prospecto → inscrito (meta: +30%) / Tiempo de primer contacto a prospecto (meta: <60 seg)
+💸 Sustituye: Asesor de admisiones adicional ($15,000–$25,000 MXN/mes) o call center de captación externo
+🏗️  DESARROLLADORAS INMOBILIARIAS / AGENCIAS DE BIENES RAÍCES
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Leads de portales (Inmuebles24, Lamudi) sin respuesta en horario no comercial
+☐
+Base de datos de leads 'fríos' sin estrategia de reactivación (miles de contactos muertos)
+☐
+Seguimiento de prospectos asignado a cada asesor sin visibilidad central ni CRM
+☐
+Visitas agendadas con prospectos no calificados — asesores pierden tiempo
+☐
+Cotizaciones y fichas técnicas enviadas manualmente por cada asesor
+☐
+Sin proceso de nutrición entre el primer contacto y la firma de promesa de compra
+📌 Caso de referencia: Donpiso (Vystral) — 85% tasa de respuesta al primer contacto, 2.8x más conversiones, atención 24/7. Atrium District (Vystral) — reactivó miles de leads 'muertos', +40% facturación a $0 de costo de adquisición
+📊 Métrica objetivo: Tasa de respuesta al primer contacto en <60 seg (meta: >85%) / Conversión lead → visita calificada (meta: 2x actual)
+💸 Sustituye: Equipo de SDRs ($20,000–$40,000 MXN/mes por persona) o CRM enterprise con automatizaciones ($5,000–$15,000 MXN/mes)
+🛒  RETAIL / E-COMMERCE / TIENDAS EN LÍNEA
+✓
+CUELLO DE BOTELLA CARACTERÍSTICO
+NOTAS / FRECUENCIA
+☐
+Carritos abandonados sin recuperación automática vía WhatsApp o email
+☐
+Atención post-venta (devoluciones, seguimiento de pedidos) manual y lenta
+☐
+Sin sistema de recomendación o upsell al cliente que ya compró
+☐
+Gestión de inventario y alertas de stock sin automatizar
+☐
+Campañas de reactivación a clientes inactivos hechas a mano o no se hacen
+☐
+Respuesta a preguntas de producto (tallas, disponibilidad, envíos) sin chatbot
+📌 Caso de referencia: Reuse (Vambe AI) — expansión a 3 países con atención 24/7; aumento de tasa de conversión vs. operación manual. Klicker/Grupo Kauffman (Vambe AI) — miles de conversaciones automatizadas, mismo equipo de ventas
+📊 Métrica objetivo: Tasa de recuperación de carritos abandonados (meta: >20%) / Tasa de conversión chat → compra
+💸 Sustituye: Agente de atención al cliente adicional ($10,000–$18,000 MXN/mes) o plataforma de chatbot externa ($2,000–$8,000 MXN/mes)
+OTRO GIRO / INDUSTRIA  —  Personalizar
+Giro especifico del negocio: _______________________________________________________
+V
+CUELLO DE BOTELLA CARACTERISTICO
+NOTAS / FRECUENCIA
+☐
+Respuesta lenta o nula a prospectos y leads entrantes (WhatsApp, email, redes sociales)
+☐
+Tareas administrativas repetitivas que consumen horas del equipo sin agregar valor
+☐
+Seguimiento manual a clientes o prospectos — oportunidades perdidas por falta de contacto
+☐
+Proceso de cotización, propuesta o contratación lento y dependiente de una sola persona
+☐
+Falta de visibilidad centralizada del pipeline de ventas o del estado de cada cliente
+☐
+Comunicación interna desorganizada — información dispersa en WhatsApp, correo y hojas de cálculo
+☐
+Cuello de botella adicional (describa):
+☐
+Cuello de botella adicional (describa):
+☐
+Cuello de botella adicional (describa):
+Caso de referencia a usar (completar en sesion): _________________________________________
+Metrica objetivo (definir en sesion): __________________________________________________
+Inversion actual que sustituye: $______________ MXN/mes en: ___________________________________
+03    CUANTIFICACIÓN DEL DOLOR
+Completar durante la sesión con el consultor — convertir el dolor en números $MXN
+Instrucciones: Tomar los 2–3 cuellos de botella marcados con mayor frecuencia en la Sección 2 y cuantificarlos.
+PROCESO / DOLOR #1
+PROCESO / DOLOR #2
+Nombre del proceso
+Horas/semana dedicadas a este proceso
+___ hrs × ___ personas
+___ hrs × ___ personas
+Costo por hora del personal ($MXN)
+$ _______________
+$ _______________
+Leads / oportunidades perdidas por mes
+___ leads × $ ___ c/u
+___ leads × $ ___ c/u
+Multas / errores / reprocesos por mes ($MXN)
+$ _______________
+$ _______________
+Herramienta/persona actual para resolverlo
+Costo mensual de esa solución actual ($MXN)
+$ _______________
+$ _______________
+COSTO TOTAL DEL DOLOR (anual)
+$ _______________ /año
+$ _______________ /año
+04    MATRIZ DE PRIORIZACIÓN PONDERADA
+Calificar cada proceso del 1 al 10 en cada criterio — el caso de uso con mayor puntaje = el proyecto
+CRITERIO DE PRIORIZACIÓN
+Peso
+PROCESO #1  (calif. 1–10)
+PROCESO #2  (calif. 1–10)
+Rationale
+Criticalidad del cuello de botella
+¿Impacta directamente la restricción que frena la facturación?
+35%
+Calif: ___ × 0.35 = ___
+Calif: ___ × 0.35 = ___
+Velocidad de entrega del MVP
+¿Puede construirse en Make.com/n8n en la Semana 2 sin código complejo?
+25%
+Calif: ___ × 0.25 = ___
+Calif: ___ × 0.25 = ___
+Liberación de horas-hombre
+¿Cuántas hrs/semana se reasignan a tareas facturables reales?
+20%
+Calif: ___ × 0.20 = ___
+Calif: ___ × 0.20 = ___
+Mitigación de errores operativos
+¿Previene multas, errores contables o pérdida de leads sin atención?
+20%
+Calif: ___ × 0.20 = ___
+Calif: ___ × 0.20 = ___
+PUNTAJE TOTAL PONDERADO
+100%
+TOTAL = _____ / 10
+TOTAL = _____ / 10
+Proceso seleccionado para el Sprint: _________________________________________________________________
+05    CÁLCULO DEL ROI
+Cálculo financiero del caso de negocio — completar con los datos de la Sección 3
+A) BENEFICIOS CUANTIFICABLES (AÑO 1)
+FUENTE DE BENEFICIO
+FÓRMULA / BASE
+MONTO ($MXN)
+Ahorro de tiempo realizado
+Hrs liberadas/sem × costo/hr × 4.3 sem × 60% productividad fantasma
+___ × $ ___ × 4.3 × 0.6 × 12
+$ _______________
+Ingresos extra por conversión
+Leads recuperados/mes × ticket promedio × 12 meses × margen neto
+___ × $ ___ × 12 × ___
+$ _______________
+Costos de riesgo evitado
+Multas SAT / errores contables / penalizaciones contractuales evitadas/año
+Estimado conservador
+$ _______________
+TOTAL BENEFICIOS AÑO 1
+(A) + (B) + (C)
+$ _______________
+B) COSTO TOTAL DE PROPIEDAD — TCO aiLearning (AÑO 1)
+COMPONENTE
+TIPO
+MONTO ($MXN)
+AI Audit Gateway — Fase de Diseño y Blueprint
+Pago único
+$ 15,000
+Upfront Sprint Fee — Desarrollo e integración del MVP (3 semanas)
+Pago único
+$45,000 – $90,000
+Consumo operativo de APIs e infraestructura (Año 1)
+Estimado anual
+$ 15,000
+TCO TOTAL AÑO 1
+$75,000 – $120,000
+C) MÉTRICAS FINANCIERAS CLAVE
+ROI AÑO 1
+PAYBACK PERIOD
+INVERSIÓN QUE SUSTITUYE
+((Beneficios - TCO) / TCO) × 100 =
+_____________ %
+TCO / (Beneficios / 12) =
+___ meses
+La solución reemplaza:
+$ _______ MXN/mes en:
+06    DISEÑO DE LA OFERTA
+Propuesta estructurada para presentar al cliente al cierre de la sesión
+Nombre de la solución: _____________________________________________________________
+Proceso / Dolor que resuelve:
+Vertical / Giro del cliente:
+Herramientas a utilizar:
+☐ Make.com   ☐ n8n   ☐ Claude API   ☐ GPT-4o
+☐ WhatsApp Business API   ☐ Notion/Airtable   ☐ Vapi/Retell
+☐ HubSpot/Google Sheets   ☐ Otro: _____________
+Stack técnico del agente:
+☐ Agente conversacional (WhatsApp / voz)
+☐ Agente documental (RAG / OCR cognitivo)
+☐ Multi-agente orquestado (contenido / flujos)
+☐ Automatización de procesos backend
+MÉTRICA PRINCIPAL DE RESULTADO
+Métrica
+Valor actual (baseline)
+Meta con IA (Año 1)
+Impacto en $MXN/año
+$ _______________
+CASO DE ÉXITO DE REFERENCIA PARA EL CLIENTE
+Empresa / Caso
+Giro similar
+Resultado obtenido
+Fuente / URL
+INVERSIÓN QUE SUSTITUYE / JUSTIFICACIÓN FINANCIERA
+Esta solución reemplaza: ________________________________________________________________________
+Costo mensual de esa inversión actual: $____________________ MXN/mes   =   $________________________ MXN/año
+ESTRUCTURA DE PRECIOS aiLearning
+FASE
+ENTREGABLES
+PRECIO ($MXN)
+CONDICIÓN
+AI Audit Gateway
+• Mapa de procesos en BPMN 2.0
+• Análisis cuantitativo de cuellos de botella
+• Matriz de prioridad ponderada
+• Caso de negocio con ROI en $MXN
+$15,000
+100% anticipado
+Sprint MVP
+• Desarrollo e integración del agente en Sandbox (3 sem)
+• Capacitación ADKAR al equipo del cliente
+• Despliegue piloto en vivo + reporte de KPIs
+$45,000 – $90,000
+100% anticipado antes de iniciar
+Licencia Mensual
+• Licenciamiento de uso del agente (IP en aiLearning)
+• Soporte preventivo (model drift, APIs)
+• Optimizaciones mensuales de prompts
+$14,000 /mes
+Contrato mensual renovable
+PRÓXIMOS PASOS
+#
+ACCIÓN
+RESPONSABLE
+FECHA LÍMITE
+1
+Cliente realiza pago del AI Audit Gateway ($15,000 MXN) — OXXO Pay / transferencia SPEI
+Cliente
+2
+aiLearning confirma pago y agenda sesión de Gemba (mapeo de procesos en BPMN 2.0)
+aiLearning
+3
+Entrega del Blueprint técnico: flujo del agente, fuentes de datos, APIs y diagrama de integración
+aiLearning
+Día 5 del sprint
+4
+Cliente aprueba Blueprint y realiza pago del Sprint Fee ($45K–$90K MXN) antes de iniciar desarrollo
+Cliente
+5
+Inicio del Sprint de 3 semanas — entrega del piloto en vivo + reporte de KPIs
+aiLearning
+Semana 3
+FIRMA DEL CONSULTOR aiLearning
+FIRMA DEL CLIENTE / APROBACIÓN
+Nombre: ___________________________________
+Firma: ____________________________________
+Fecha: ____________________________________
+Nombre: ___________________________________
+Firma: ____________________________________
+Fecha: ____________________________________
+Nota: La firma en este documento constituye aprobación de los términos comerciales de la Fase 1 (AI Audit Gateway). No implica inicio de desarrollo. El Blueprint técnico se entrega únicamente tras la confirmación del pago anticipado del 100%.

@@ -1,0 +1,19 @@
+{
+  "name": "ailearning-diagnostico-2.0",
+  "version": "2.0.0",
+  "description": "Formato de Diagnóstico de Necesidades de Automatización (AI Audit Gateway) y Dashboard para aiLearning.mx",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true
+}
