@@ -165,6 +165,12 @@ function showStep(stepNum) {
   const activeNavItem = document.getElementById(`nav-step-${stepNum}`);
   if (activeNavItem) activeNavItem.classList.add('active');
 
+  // Auto-cierre de la barra lateral móvil al cambiar de sección
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('show');
+
   // Ajustar títulos e interfaces según el paso
   const titles = [
     { title: "Historial de Diagnósticos", sub: "Auditorías Operativas de Inteligencia Artificial" },
@@ -1056,4 +1062,12 @@ function triggerNativePrint() {
   // Asegurarnos de que el print view esté sincronizado antes de imprimir
   triggerRecalcs();
   window.print();
+}
+
+// Alternar la barra lateral móvil (Drawer)
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  if (sidebar) sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('show');
 }

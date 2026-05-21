@@ -13,13 +13,33 @@
 </head>
 <body>
 
+  <!-- Mobile Overlay for Drawer -->
+  <div class="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+  <!-- Mobile Top Header Bar -->
+  <header class="mobile-header">
+    <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()" aria-label="Abrir menú">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <a href="#" onclick="showStep(0)" class="mobile-brand">
+      <span class="mobile-logo-box">ai</span>
+      <span class="mobile-brand-title">aiLEARNING</span>
+    </a>
+    <div style="width: 40px;"></div> <!-- visual spacer -->
+  </header>
+
   <!-- ================================================================
        SCREEN INTERFACE (App Container)
        ================================================================ -->
   <div id="app-container">
     
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation Drawer -->
     <aside class="sidebar">
+      <!-- Mobile Close Drawer Button -->
+      <button class="sidebar-close-btn" onclick="toggleMobileSidebar()" aria-label="Cerrar menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
       <a href="#" onclick="showStep(0)" class="brand">
         <div class="brand-logo">ai</div>
         <div class="brand-text">
