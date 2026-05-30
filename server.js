@@ -1,6 +1,7 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const puppeteer = require('puppeteer');
 const { dbRun, dbGet, dbAll } = require('./database');
 
 const app = express();
@@ -104,11 +105,14 @@ app.post('/api/diagnosticos', async (req, res) => {
 
     const id = uuidv4();
     const datosJson = JSON.stringify(datos_completos || {});
+    const scoreConfianza = req.body.score_confianza || 0;
+    const tcoTotal = req.body.tco_total || 0;
+    const roiAnual = req.body.roi_anual || 0;
 
     await dbRun(
-      `INSERT INTO diagnosticos (id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datos_completos)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datosJson]
+      `INSERT INTO diagnosticos (id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datos_completos, score_confianza, tco_total, roi_anual)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datosJson, scoreConfianza, tcoTotal, roiAnual]
     );
 
     res.status(201).json({ id, message: 'Diagnóstico creado con éxito.' });
@@ -134,12 +138,15 @@ app.put('/api/diagnosticos/:id', async (req, res) => {
     }
 
     const datosJson = JSON.stringify(datos_completos || {});
+    const scoreConfianza = req.body.score_confianza || 0;
+    const tcoTotal = req.body.tco_total || 0;
+    const roiAnual = req.body.roi_anual || 0;
 
     await dbRun(
       `UPDATE diagnosticos 
-       SET empresa = ?, giro = ?, nombre_contacto = ?, cargo = ?, consultor = ?, fecha = ?, datos_completos = ?
+       SET empresa = ?, giro = ?, nombre_contacto = ?, cargo = ?, consultor = ?, fecha = ?, datos_completos = ?, score_confianza = ?, tco_total = ?, roi_anual = ?
        WHERE id = ?`,
-      [empresa, giro, nombre_contacto, cargo, consultor, fecha, datosJson, id]
+      [empresa, giro, nombre_contacto, cargo, consultor, fecha, datosJson, scoreConfianza, tcoTotal, roiAnual, id]
     );
 
     res.json({ message: 'Diagnóstico actualizado con éxito.' });
@@ -163,6 +170,104 @@ app.delete('/api/diagnosticos/:id', async (req, res) => {
   } catch (err) {
     console.error('Error deleting diagnostic:', err.message);
     res.status(500).json({ error: 'Error al eliminar el diagnóstico.' });
+  }
+});
+
+// 6. Analytics
+app.get('/api/analytics', async (req, res) => {
+  try {
+    const data = await dbGet(`
+      SELECT 
+        COUNT(*) as total_diagnostics,
+        AVG(score_confianza) as avg_confidence,
+        SUM(tco_total) as total_tco,
+        AVG(roi_anual) as avg_roi
+      FROM diagnosticos
+    `);
+    res.json(data);
+  } catch (err) {
+    console.error('Error fetching analytics:', err.message);
+    res.status(500).json({ error: 'Error al obtener analytics.' });
+  }
+});
+
+// 7. Export CSV
+app.get('/api/export-csv', async (req, res) => {
+  try {
+    const rows = await dbAll('SELECT * FROM diagnosticos ORDER BY created_at DESC');
+    
+    // Header
+    const headers = ["ID", "Empresa", "Giro", "Contacto", "Cargo", "Consultor", "Fecha", "Score Confianza", "TCO Total", "ROI Anual", "Creado En"];
+    let csvContent = headers.join(',') + "\\n";
+    
+    // Rows
+    for (const row of rows) {
+      const line = [
+        row.id,
+        '"' + (row.empresa?.replace(/"/g, '""') || '') + '"',
+        '"' + (row.giro?.replace(/"/g, '""') || '') + '"',
+        '"' + (row.nombre_contacto?.replace(/"/g, '""') || '') + '"',
+        '"' + (row.cargo?.replace(/"/g, '""') || '') + '"',
+        '"' + (row.consultor?.replace(/"/g, '""') || '') + '"',
+        row.fecha,
+        row.score_confianza || 0,
+        row.tco_total || 0,
+        row.roi_anual || 0,
+        row.created_at
+      ];
+      csvContent += line.join(',') + "\\n";
+    }
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="diagnosticos.csv"');
+    res.send(csvContent);
+  } catch (err) {
+    console.error('Error exporting CSV:', err.message);
+    res.status(500).send('Error exportando CSV.');
+  }
+});
+
+// 8. Generate PDF via Puppeteer
+app.get('/api/diagnosticos/:id/pdf', async (req, res) => {
+  try {
+    const id = req.params.id;
+    // Check if it exists
+    const row = await dbGet('SELECT id, empresa FROM diagnosticos WHERE id = ?', [id]);
+    if (!row) {
+      return res.status(404).json({ error: 'Diagnóstico no encontrado.' });
+    }
+
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    
+    const page = await browser.newPage();
+    
+    // We navigate to the client view
+    const url = `http://localhost:${PORT}/cliente/${id}`;
+    await page.goto(url, { waitUntil: 'networkidle0' });
+
+    // Wait an extra second for animations to settle
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '10px', bottom: '10px', left: '10px', right: '10px' }
+    });
+
+    await browser.close();
+
+    const safeFilename = row.empresa.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="diagnostico_${safeFilename}.pdf"`);
+    res.send(Buffer.from(pdfBuffer));
+  } catch (err) {
+    console.error('Error genering PDF:', err.message);
+    res.status(500).json({ error: 'Error interno generando PDF.' });
   }
 });
 

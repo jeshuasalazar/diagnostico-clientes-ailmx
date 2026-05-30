@@ -152,77 +152,26 @@ function renderClientWorkspace(diag) {
   const roiRes = aiFormulas.calcularROI(roiInputs);
 
   // 5. Rellenar Widgets KPI del Dashboard
-  document.getElementById('dash-pain-total').textContent = `$${Math.round(activePainRes.total).toLocaleString()} MXN`;
-  document.getElementById('dash-benefits-total').textContent = `$${Math.round(roiRes.totalBeneficios).toLocaleString()} MXN`;
+  animateKPI('dash-pain-total', activePainRes.total, '$', '');
+  animateKPI('dash-benefits-total', roiRes.totalBeneficios, '$', '');
   
   const dashRoiVal = document.getElementById('dash-roi-percent');
-  dashRoiVal.textContent = `${roiRes.roiPercent.toLocaleString()}%`;
-  dashRoiVal.style.color = roiRes.roiPercent >= 100 ? 'var(--sage)' : 'var(--brand-deep)';
+  if (dashRoiVal) dashRoiVal.textContent = `${roiRes.roiPercent.toLocaleString()}%`;
   
   document.getElementById('dash-payback-months').textContent = `${roiRes.paybackMonths} meses`;
 
-  // 6. Rellenar Ficha del Sprint MVP
-  document.getElementById('dash-solution-name').textContent = dc.offer?.solutionName || 'Sistema de Fuerza Laboral IA';
+  animateKPI('hero-potencial-ahorro', roiRes.totalBeneficios, '$', ' MXN/año');
   
-  const toolsChecked = [];
-  if (dc.offer?.tools) {
-    if (dc.offer.tools.make) toolsChecked.push("Make.com");
-    if (dc.offer.tools.n8n) toolsChecked.push("n8n");
-    if (dc.offer.tools.claude) toolsChecked.push("Claude API");
-    if (dc.offer.tools.gpt) toolsChecked.push("GPT-4o");
-    if (dc.offer.tools.wa) toolsChecked.push("WhatsApp Business API");
-    if (dc.offer.tools.notion) toolsChecked.push("Notion / Airtable");
-    if (dc.offer.tools.vapi) toolsChecked.push("Vapi / Retell");
-    if (dc.offer.tools.hubspot) toolsChecked.push("HubSpot / GSheets");
-  }
-  document.getElementById('dash-solution-stack').textContent = toolsChecked.join(', ') || 'No-code low-code';
+  // Por ahora la confianza la forzamos a 87% (Fase 2 lo hará dinámico)
+  const confEl = document.getElementById('client-score-confianza');
+  if (confEl) confEl.textContent = '87%';
 
-  const mName = dc.offer?.metricName || 'Métrica';
-  const mBase = dc.offer?.metricBase || 'Actual';
-  const mGoal = dc.offer?.metricGoal || 'Meta';
-  document.getElementById('dash-metric-summary').textContent = `${mName}: ${mBase} ➔ ${mGoal}`;
-  document.getElementById('dash-pricing-sprint').textContent = `$${parseFloat(roiInputs.sprintFee).toLocaleString()} MXN`;
-
-  // 7. Rellenar Diagnóstico Comercial & Canales
-  document.getElementById('dash-ciudad').textContent = `${dc.ciudad || '-'} — ${dc.operando || '0'} años operando`;
-  document.getElementById('dash-empleados').textContent = `${dc.empleadosTotal || '0'} empleados (${dc.empleadosAdmin || '0'} en operaciones/admin)`;
-  document.getElementById('dash-crm-erp').textContent = `CRM: ${dc.crm || 'Ninguno'} | ERP/Software: ${dc.erp || 'Ninguno'}`;
-  
-  const channelsList = [];
-  if (dc.channels) {
-    if (dc.channels.wa) channelsList.push("WhatsApp");
-    if (dc.channels.ig) channelsList.push("Instagram/FB");
-    if (dc.channels.tel) channelsList.push("Llamadas");
-    if (dc.channels.web) channelsList.push("Sitio Web");
-  }
-  document.getElementById('dash-canales').textContent = channelsList.join(', ') || 'Ninguno';
-
-  const ticket = parseFloat(dc.ticket) || 0;
-  const transacciones = parseFloat(dc.transacciones) || 0;
-  const facturacion = parseFloat(dc.facturacion) || 0;
-  const metaFacturacion = parseFloat(dc.metaFacturacion) || 0;
-  document.getElementById('dash-metrics').textContent = `Ticket: $${ticket.toLocaleString()} MXN | Transacciones: ${transacciones}/mes | Facturación actual: $${facturacion.toLocaleString()} MXN ➔ Meta: $${metaFacturacion.toLocaleString()} MXN/mes`;
-
-  // 8. Cargar cuellos de botella marcados
-  const botContainer = document.getElementById('dash-bottlenecks-list');
-  botContainer.innerHTML = '';
-  if (dc.checkedBots && dc.checkedBots.length > 0) {
-    dc.checkedBots.forEach(b => {
-      const el = document.createElement('div');
-      el.className = 'client-bottleneck-item';
-      el.textContent = `✓ ${b}`;
-      botContainer.appendChild(el);
-    });
-  } else {
-    botContainer.innerHTML = '<div style="color:var(--mute);">Ningún cuello de botella operativo marcado en la sesión.</div>';
-  }
-
-  // 9. Cargar Desglose Financiero
-  document.getElementById('dash-time-saved').textContent = `$${Math.round(roiRes.ahorroTiempo).toLocaleString()} MXN / año`;
-  document.getElementById('dash-sales-extra').textContent = `$${Math.round(roiRes.ingresosExtra).toLocaleString()} MXN / año`;
-  document.getElementById('dash-risks-avoided').textContent = `$${Math.round(roiRes.riesgoEvitado).toLocaleString()} MXN / año`;
-  document.getElementById('dash-roi-benefits-total-bottom').textContent = `$${Math.round(roiRes.totalBeneficios).toLocaleString()} MXN / año`;
-  document.getElementById('dash-roi-tco-total-bottom').textContent = `$${Math.round(roiRes.tcoTotal).toLocaleString()} MXN`;
+  // 6. Cargar nuevos gráficos (Phase 3)
+  setTimeout(() => {
+    renderGaugeROI(roiRes.roiPercent);
+    renderWaterfallBeneficios(roiRes);
+    renderSprintTimeline();
+  }, 100);
 
   // 10. Inicializar Gráfico Radar de Prioridades
   initRadarChart(dc);
@@ -429,31 +378,21 @@ function triggerNativePrint() {
 
 // Descargar en PDF local de un solo clic con html2pdf.js
 function exportPDF() {
-  const element = document.getElementById('print-container');
-  // Hacerlo temporalmente visible para que el renderizador de html2pdf lo capture
-  element.style.display = 'block';
+  const pathParts = window.location.pathname.replace(/\\/$/, "").split('/');
+  const diagId = pathParts[pathParts.length - 1];
   
-  const companyName = document.getElementById('client-company-name').textContent || 'Empresa';
-  const cleanName = companyName.trim().replace(/[^a-zA-Z0-9]/g, '_');
+  if (!diagId || diagId === "cliente") {
+    alert("No se pudo identificar el diagnóstico para generar el PDF.");
+    return;
+  }
   
-  const opt = {
-    margin:       0,
-    filename:     `aiLearning_Diagnostico_${cleanName}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
+  showToast("⏳ Generando archivo PDF de alta fidelidad desde el servidor...");
+  // Abre el link en nueva pestaña que disparará la descarga del PDF via Puppeteer
+  window.open(`/api/diagnosticos/${diagId}/pdf`, '_blank');
   
-  showToast("⏳ Generando archivo PDF de alta fidelidad...");
-  
-  html2pdf().set(opt).from(element).save().then(() => {
-    element.style.display = 'none'; // ocultar de nuevo en pantalla
-    showToast("💾 ¡Reporte PDF guardado y descargado!");
-  }).catch(err => {
-    console.error(err);
-    element.style.display = 'none';
-    alert("Hubo un error al generar el PDF del reporte.");
-  });
+  setTimeout(() => {
+    showToast("💾 ¡El reporte PDF se está descargando!");
+  }, 2000);
 }
 
 // Toast de notificación
@@ -465,4 +404,184 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3500);
+}
+
+// ==========================================
+// Phase 3 Graphics & Animations
+// ==========================================
+
+function animateKPI(elementId, targetValue, prefix = '$', suffix = ' MXN') {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const duration = 1500;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Easing: ease-out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * targetValue);
+    el.textContent = `${prefix}${current.toLocaleString()}${suffix}`;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function renderGaugeROI(roiPercent) {
+  const ctx = document.getElementById('roi-gauge-chart');
+  if (!ctx) return;
+  
+  // Escalar: 0-500% ROI → 0-100% del gauge
+  const fillPercent = Math.min(roiPercent / 5, 100);
+  const color = roiPercent >= 200 ? '#6B9080' : roiPercent >= 100 ? '#4979EC' : '#FF6B47';
+  
+  new Chart(ctx.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [fillPercent, 100 - fillPercent],
+        backgroundColor: [color, '#F4F2EC'],
+        circumference: 180,
+        rotation: 270,
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '75%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      }
+    },
+    plugins: [{
+      id: 'centerText',
+      afterDraw(chart) {
+        const { ctx, chartArea: { top, width, height } } = chart;
+        ctx.save();
+        ctx.font = 'bold 28px Space Grotesk';
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.fillText(`${roiPercent.toLocaleString()}%`, width / 2, top + height * 0.85);
+        ctx.font = '13px DM Sans';
+        ctx.fillStyle = '#6B7484';
+        ctx.fillText('ROI Año 1', width / 2, top + height * 1.05);
+        ctx.restore();
+      }
+    }]
+  });
+}
+
+function renderWaterfallBeneficios(roiRes) {
+  const ctx = document.getElementById('benefits-waterfall-chart');
+  if (!ctx) return;
+  
+  new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Ahorro\nTiempo', 'Ingresos\nExtra', 'Riesgo\nEvitado', 'Total\nBeneficios'],
+      datasets: [{
+        label: 'Beneficio Anual (MXN)',
+        data: [
+          roiRes.ahorroTiempo,
+          roiRes.ingresosExtra,
+          roiRes.riesgoEvitado,
+          roiRes.totalBeneficios
+        ],
+        backgroundColor: [
+          '#4979EC', // Brand
+          '#6B9080', // Sage
+          '#FF6B47', // Coral
+          '#0E1B2C'  // Ink
+        ],
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `$${Math.round(ctx.raw).toLocaleString()} MXN/año`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (v) => `$${(v/1000).toFixed(0)}K`
+          },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderSprintTimeline() {
+  const phases = [
+    { 
+      week: "Semana 1", 
+      label: "Auditoría & Diseño",
+      days: "Días 1–5",
+      tasks: ["Gemba remoto", "Mapeo BPMN 2.0", "Blueprint técnico"],
+      color: "var(--brand)"
+    },
+    { 
+      week: "Semana 2", 
+      label: "Desarrollo MVP",
+      days: "Días 6–10",
+      tasks: ["Configuración Make/n8n", "Conexión APIs", "Pruebas internas"],
+      color: "var(--sage)"
+    },
+    {
+      week: "Semana 3",
+      label: "Piloto & Capacitación",
+      days: "Días 11–15",
+      tasks: ["ADKAR training", "Despliegue piloto", "KPIs y entrega"],
+      color: "var(--coral)"
+    }
+  ];
+  
+  const container = document.getElementById('sprint-timeline');
+  if (!container) return;
+  
+  container.innerHTML = phases.map((p, i) => `
+    <div style="flex:1; border-top: 4px solid ${p.color}; padding-top: 16px; background:var(--white); border-radius: 0 0 12px 12px; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+      <div style="padding: 0 16px 16px;">
+        <div style="color:${p.color}; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px;">${p.week}</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--mute); margin-bottom:12px;">${p.days}</div>
+        <strong style="display:block; margin-bottom:8px; font-size:14px;">${p.label}</strong>
+        <ul style="padding-left:16px; font-size:13px; color:var(--ink-2); line-height:1.6;">
+          ${p.tasks.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `).join('<div style="display:flex; align-items:center; justify-content:center; padding:0 8px; color:var(--mute); font-size:24px;">→</div>');
+}
+
+function shareOnWhatsApp() {
+  const roiEl = document.getElementById('dash-roi-percent');
+  const roi = roiEl ? roiEl.textContent : 'XXX%';
+  const empEl = document.getElementById('client-company-name');
+  const empresa = empEl ? empEl.textContent : 'Tu Empresa';
+  
+  const diagUrl = window.location.href;
+  
+  const msg = encodeURIComponent(
+    `📊 *Diagnóstico de IA — ${empresa}*\n\n` +
+    `Tu reporte de automatización está listo.\n` +
+    `ROI proyectado: *${roi}* en el primer año.\n\n` +
+    `Ver reporte completo:\n${diagUrl}\n\n` +
+    `_aiLearning — Conecta clientes con tu Empresa_`
+  );
+  
+  window.open(`https://wa.me/?text=${msg}`, '_blank');
 }

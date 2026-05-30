@@ -40,6 +40,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
         consultor TEXT,
         fecha TEXT,
         datos_completos TEXT NOT NULL,
+        score_confianza REAL DEFAULT 0,
+        tco_total REAL DEFAULT 0,
+        roi_anual REAL DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `, (createErr) => {
@@ -206,13 +209,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
             ];
 
             const stmt = db.prepare(`
-              INSERT INTO diagnosticos (id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datos_completos)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+              INSERT INTO diagnosticos (id, empresa, giro, nombre_contacto, cargo, consultor, fecha, datos_completos, score_confianza, tco_total, roi_anual)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `);
 
             seedData.forEach((d) => {
               const datosJson = JSON.stringify(d.datos_completos);
-              stmt.run(d.id, d.empresa, d.giro, d.nombre_contacto, d.cargo, d.consultor, d.fecha, datosJson, (insErr) => {
+              // Simulated values for seed data
+              const tcoTotal = parseFloat(d.datos_completos.roi?.sprintFee) || 0;
+              const roiAnual = parseFloat(d.datos_completos.roi?.marginNet) || 0;
+              const score = 85.0; // High confidence for seeds
+
+              stmt.run(d.id, d.empresa, d.giro, d.nombre_contacto, d.cargo, d.consultor, d.fecha, datosJson, score, tcoTotal, roiAnual, (insErr) => {
                 if (insErr) {
                   console.error('Error en sembrado automático:', insErr.message);
                 } else {

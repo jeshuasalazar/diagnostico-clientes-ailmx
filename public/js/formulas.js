@@ -89,6 +89,30 @@ const aiFormulas = {
       roiPercent: Math.round(roiAnualPercent * 10) / 10, // Redondear a 1 decimal
       paybackMonths: Math.round(paybackPeriodMonths * 10) / 10 // Redondear a 1 decimal
     };
+  },
+
+  /**
+   * 4. Calcular Score de Confianza
+   * Evalúa qué tan completo y realista es el caso de negocio.
+   * Retorna un porcentaje 0-100.
+   */
+  calcularScoreConfianza: function(roiInputs) {
+    let score = 100;
+    
+    // Penalizar si no hay horas liberadas
+    if (!roiInputs.horasLiberadasSemana || roiInputs.horasLiberadasSemana <= 0) {
+      score -= 20;
+    }
+    // Penalizar si no hay ticket promedio u otro valor de ingresos
+    if (!roiInputs.ticketPromedio || roiInputs.ticketPromedio <= 0) {
+      score -= 15;
+    }
+    // Penalizar si el sprint fee es demasiado bajo o 0 (irreal)
+    if (!roiInputs.sprintFee || roiInputs.sprintFee < 10000) {
+      score -= 15;
+    }
+    
+    return Math.max(0, Math.min(100, score));
   }
 };
 

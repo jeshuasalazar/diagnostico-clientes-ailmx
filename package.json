@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "puppeteer": "^25.1.0",
     "sqlite3": "^5.1.7",
     "uuid": "^9.0.1"
   },

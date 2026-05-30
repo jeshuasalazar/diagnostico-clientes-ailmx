@@ -58,43 +58,19 @@
         <li class="nav-item" id="nav-step-1">
           <button onclick="showStep(1)">
             <span class="step-num">01</span>
-            <span>Datos del Negocio</span>
+            <span>Datos Generales</span>
           </button>
         </li>
         <li class="nav-item" id="nav-step-2">
           <button onclick="showStep(2)">
             <span class="step-num">02</span>
-            <span>Identificar Dolores</span>
+            <span>Cuantificación del Dolor</span>
           </button>
         </li>
         <li class="nav-item" id="nav-step-3">
           <button onclick="showStep(3)">
             <span class="step-num">03</span>
-            <span>Cuantificar Dolor</span>
-          </button>
-        </li>
-        <li class="nav-item" id="nav-step-4">
-          <button onclick="showStep(4)">
-            <span class="step-num">04</span>
-            <span>Matriz Priorización</span>
-          </button>
-        </li>
-        <li class="nav-item" id="nav-step-5">
-          <button onclick="showStep(5)">
-            <span class="step-num">05</span>
-            <span>Simulación ROI</span>
-          </button>
-        </li>
-        <li class="nav-item" id="nav-step-6">
-          <button onclick="showStep(6)">
-            <span class="step-num">06</span>
-            <span>Diseño de Oferta</span>
-          </button>
-        </li>
-        <li class="nav-item" id="nav-step-7">
-          <button onclick="showStep(7)">
-            <span class="step-num">07</span>
-            <span>Dashboard Final</span>
+            <span>Pitch Comercial & Sprint</span>
           </button>
         </li>
       </ul>
@@ -267,91 +243,44 @@
 
         <div class="step-navigation">
           <button class="btn btn-secondary" onclick="showStep(0)">Regresar al Inicio</button>
-          <button class="btn btn-primary" onclick="showStep(2)">Siguiente: Dolores de la Vertical</button>
+          <button class="btn btn-primary" onclick="showStep(2)">Siguiente: Cuantificación del Dolor</button>
         </div>
       </div>
 
+      
       <!-- ==========================================
-           STEP 2: IDENTIFICACIÓN DE DOLORES
+           STEP 2: CUANTIFICACIÓN DEL DOLOR
            ========================================== -->
       <div class="step-pane" id="pane-step-2" style="display:none;">
+        
         <div class="card">
           <div class="card-title-group">
-            <h3>02. Identificación de Cuellos de Botella por Vertical</h3>
-            <span class="card-subtitle">Filtro de Fricciones & Diagnóstico de Procesos</span>
+            <h3>2.1 Cuellos de Botella de la Vertical</h3>
           </div>
-
           <div id="vertical-not-selected-message" class="empty-state">
             <h3>Primero seleccione una vertical</h3>
-            <p>Por favor, regrese a la Sección 1 y elija la vertical de negocio del cliente para cargar sus cuellos de botella característicos.</p>
           </div>
-
-          <div id="vertical-active-pane" style="display:none; display:flex; flex-direction:column; gap:20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <p>Vertical Activa: <strong id="active-vertical-label" class="badge-total">Legal</strong></p>
-              <span class="kpi-label">Marcar los cuellos de botella que aplican al negocio</span>
-            </div>
-
-            <!-- List of bottlenecks dynamic checkboxes container -->
-            <div class="bottlenecks-list" id="bottlenecks-checkboxes-container">
-              <!-- Rendered dynamically by javascript -->
-            </div>
-
-            <!-- Reference Case Box -->
+          <div id="vertical-active-pane" style="display:none; flex-direction:column; gap:20px;">
+            <p>Vertical Activa: <strong id="active-vertical-label" class="badge-total">Legal</strong></p>
+            <div class="bottlenecks-list" id="bottlenecks-checkboxes-container"></div>
             <div class="vertical-ref-box">
-              <div class="ref-item">
-                <strong>📌 Caso de Referencia</strong>
-                <span id="ref-case-text">Caso</span>
-              </div>
-              <div class="ref-item">
-                <strong>📊 Métrica Objetivo</strong>
-                <span id="ref-metric-text">Métrica</span>
-              </div>
-              <div class="ref-item">
-                <strong>💸 Inversión que Sustituye</strong>
-                <span id="ref-replace-text">Sustitución</span>
-              </div>
+              <div class="ref-item"><strong>📌 Caso Ref</strong> <span id="ref-case-text">-</span></div>
+              <div class="ref-item"><strong>📊 Métrica</strong> <span id="ref-metric-text">-</span></div>
+              <div class="ref-item"><strong>💸 Sustitución</strong> <span id="ref-replace-text">-</span></div>
             </div>
-
-            <!-- Customized / Extra Bottleneck Section -->
-            <div class="form-group" style="border-top:1px solid var(--line-soft); padding-top:20px;">
-              <label>¿Desea ingresar un caso de referencia o métricas personalizadas para esta sesión?</label>
-              <div class="grid-3" style="margin-top:8px;">
-                <div class="form-group">
-                  <label for="cust-ref-case">Caso de Éxito Personalizado</label>
-                  <input type="text" id="cust-ref-case" class="form-control" placeholder="Ej. Empresa Alfa — Automatización n8n">
-                </div>
-                <div class="form-group">
-                  <label for="cust-metric">Métrica Objetivo</label>
-                  <input type="text" id="cust-metric" class="form-control" placeholder="Ej. Reducir ciclo de 3 días a < 1 hora">
-                </div>
-                <div class="form-group">
-                  <label for="cust-replace">Inversión Mensual Reemplazada</label>
-                  <input type="text" id="cust-replace" class="form-control" placeholder="Ej. SDR Junior ($15,000 MXN/mes)">
-                </div>
-              </div>
+            <!-- Custom ref -->
+            <div class="grid-3">
+              <div class="form-group"><label>Caso Custom</label><input type="text" id="cust-ref-case" class="form-control"></div>
+              <div class="form-group"><label>Métrica</label><input type="text" id="cust-metric" class="form-control"></div>
+              <div class="form-group"><label>Sustitución</label><input type="text" id="cust-replace" class="form-control"></div>
             </div>
           </div>
         </div>
 
-        <div class="step-navigation">
-          <button class="btn btn-secondary" onclick="showStep(1)">Atrás</button>
-          <button class="btn btn-primary" onclick="showStep(3)">Siguiente: Cuantificación del Dolor ($MXN)</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 3: CUANTIFICACIÓN DEL DOLOR ($MXN)
-           ========================================== -->
-      <div class="step-pane" id="pane-step-3" style="display:none;">
         <div class="card">
           <div class="card-title-group">
-            <h3>03. Conversión de Dolores a Números ($MXN Anual)</h3>
-            <span class="card-subtitle">Cuantificación Financiera</span>
+            <h3>2.2 Cuantificación (Hasta 4 Procesos)</h3>
           </div>
-
-          <p class="kpi-meta" style="margin-bottom:12px;">Selecciona y cuantifica los <strong>2 procesos con mayor cuello de botella</strong> de la sección anterior para justificar el caso de negocio.</p>
-
           <div class="grid-2">
             
             <!-- PROCESO 1 -->
@@ -360,15 +289,13 @@
                 <h4 class="card-subtitle" style="color:var(--brand); font-size:12px; font-weight:700;">PROCESO / DOLOR #1</h4>
                 <span class="badge-total" id="pain-1-annual-badge">$0 / año</span>
               </div>
-              
               <div class="form-group">
-                <label for="pain-1-name">Nombre del Proceso #1</label>
-                <input type="text" id="pain-1-name" class="form-control" placeholder="Ej. Análisis manual de contratos" oninput="syncPrintData()">
+                <label for="pain-1-name">Nombre del Proceso</label>
+                <input type="text" id="pain-1-name" class="form-control" placeholder="Proceso 1" oninput="syncPrintData()">
               </div>
-
               <div class="grid-3">
                 <div class="form-group">
-                  <label for="pain-1-hours">Horas / Sem</label>
+                  <label for="pain-1-hours">Horas/Sem</label>
                   <input type="number" id="pain-1-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
@@ -376,49 +303,46 @@
                   <input type="number" id="pain-1-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-1-cost-hr">Costo / Hr ($)</label>
+                  <label for="pain-1-cost-hr">Costo/Hr ($)</label>
                   <input type="number" id="pain-1-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
-
               <div class="grid-2">
                 <div class="form-group">
                   <label for="pain-1-leads">Leads Perdidos/Mes</label>
                   <input type="number" id="pain-1-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-1-ticket">Valor de Lead ($)</label>
+                  <label for="pain-1-ticket">Valor Lead ($)</label>
                   <input type="number" id="pain-1-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
-
               <div class="grid-2">
                 <div class="form-group">
-                  <label for="pain-1-errors">Multas/Errores/Mes ($)</label>
+                  <label for="pain-1-errors">Errores/Mes ($)</label>
                   <input type="number" id="pain-1-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-1-tool">Costo Herramienta/Mes ($)</label>
+                  <label for="pain-1-tool">Costo Tool/Mes ($)</label>
                   <input type="number" id="pain-1-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
             </div>
 
+            
             <!-- PROCESO 2 -->
             <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px;">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h4 class="card-subtitle" style="color:var(--coral); font-size:12px; font-weight:700;">PROCESO / DOLOR #2</h4>
-                <span class="badge-total coral" id="pain-2-annual-badge">$0 / año</span>
+                <h4 class="card-subtitle" style="color:var(--brand); font-size:12px; font-weight:700;">PROCESO / DOLOR #2</h4>
+                <span class="badge-total" id="pain-2-annual-badge">$0 / año</span>
               </div>
-              
               <div class="form-group">
-                <label for="pain-2-name">Nombre del Proceso #2</label>
-                <input type="text" id="pain-2-name" class="form-control" placeholder="Ej. Captura manual de XMLs SAT" oninput="syncPrintData()">
+                <label for="pain-2-name">Nombre del Proceso</label>
+                <input type="text" id="pain-2-name" class="form-control" placeholder="Proceso 2" oninput="syncPrintData()">
               </div>
-
               <div class="grid-3">
                 <div class="form-group">
-                  <label for="pain-2-hours">Horas / Sem</label>
+                  <label for="pain-2-hours">Horas/Sem</label>
                   <input type="number" id="pain-2-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
@@ -426,507 +350,276 @@
                   <input type="number" id="pain-2-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-2-cost-hr">Costo / Hr ($)</label>
+                  <label for="pain-2-cost-hr">Costo/Hr ($)</label>
                   <input type="number" id="pain-2-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
-
               <div class="grid-2">
                 <div class="form-group">
                   <label for="pain-2-leads">Leads Perdidos/Mes</label>
                   <input type="number" id="pain-2-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-2-ticket">Valor de Lead ($)</label>
+                  <label for="pain-2-ticket">Valor Lead ($)</label>
                   <input type="number" id="pain-2-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
-
               <div class="grid-2">
                 <div class="form-group">
-                  <label for="pain-2-errors">Multas/Errores/Mes ($)</label>
+                  <label for="pain-2-errors">Errores/Mes ($)</label>
                   <input type="number" id="pain-2-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
                 <div class="form-group">
-                  <label for="pain-2-tool">Costo Herramienta/Mes ($)</label>
+                  <label for="pain-2-tool">Costo Tool/Mes ($)</label>
                   <input type="number" id="pain-2-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
                 </div>
               </div>
             </div>
 
+            
+            <!-- PROCESO 3 -->
+            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 class="card-subtitle" style="color:var(--brand); font-size:12px; font-weight:700;">PROCESO / DOLOR #3</h4>
+                <span class="badge-total" id="pain-3-annual-badge">$0 / año</span>
+              </div>
+              <div class="form-group">
+                <label for="pain-3-name">Nombre del Proceso</label>
+                <input type="text" id="pain-3-name" class="form-control" placeholder="Proceso 3" oninput="syncPrintData()">
+              </div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label for="pain-3-hours">Horas/Sem</label>
+                  <input type="number" id="pain-3-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-3-persons">Personas</label>
+                  <input type="number" id="pain-3-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-3-cost-hr">Costo/Hr ($)</label>
+                  <input type="number" id="pain-3-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-3-leads">Leads Perdidos/Mes</label>
+                  <input type="number" id="pain-3-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-3-ticket">Valor Lead ($)</label>
+                  <input type="number" id="pain-3-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-3-errors">Errores/Mes ($)</label>
+                  <input type="number" id="pain-3-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-3-tool">Costo Tool/Mes ($)</label>
+                  <input type="number" id="pain-3-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+            </div>
+
+            
+            <!-- PROCESO 4 -->
+            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 class="card-subtitle" style="color:var(--brand); font-size:12px; font-weight:700;">PROCESO / DOLOR #4</h4>
+                <span class="badge-total" id="pain-4-annual-badge">$0 / año</span>
+              </div>
+              <div class="form-group">
+                <label for="pain-4-name">Nombre del Proceso</label>
+                <input type="text" id="pain-4-name" class="form-control" placeholder="Proceso 4" oninput="syncPrintData()">
+              </div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label for="pain-4-hours">Horas/Sem</label>
+                  <input type="number" id="pain-4-hours" class="form-control" placeholder="Hrs" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-4-persons">Personas</label>
+                  <input type="number" id="pain-4-persons" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-4-cost-hr">Costo/Hr ($)</label>
+                  <input type="number" id="pain-4-cost-hr" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-4-leads">Leads Perdidos/Mes</label>
+                  <input type="number" id="pain-4-leads" class="form-control" placeholder="Cant." oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-4-ticket">Valor Lead ($)</label>
+                  <input type="number" id="pain-4-ticket" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="pain-4-errors">Errores/Mes ($)</label>
+                  <input type="number" id="pain-4-errors" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+                <div class="form-group">
+                  <label for="pain-4-tool">Costo Tool/Mes ($)</label>
+                  <input type="number" id="pain-4-tool" class="form-control" placeholder="$" oninput="triggerRecalcs()">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button class="btn btn-secondary" onclick="showStep(1)">Atrás</button>
+          <button class="btn btn-primary" onclick="showStep(3)">Siguiente: Pitch Comercial & Sprint</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           STEP 3: PITCH COMERCIAL & SPRINT
+           ========================================== -->
+      <div class="step-pane" id="pane-step-3" style="display:none;">
+        
+        <!-- Matriz Priorizacion -->
+        <div class="card">
+          <div class="card-title-group">
+            <h3>3.1 Selección del Sprint MVP (Matriz de Prioridad)</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="brand-table">
+              <thead>
+                <tr>
+                  <th style="width:20%;">Criterio</th>
+                  <th style="width:20%; text-align:center;">P1</th>
+                  <th style="width:20%; text-align:center;">P2</th>
+                  <th style="width:20%; text-align:center;">P3</th>
+                  <th style="width:20%; text-align:center;">P4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Criticalidad (35%)</td>
+                  <td><input type="number" id="prio-1-crit" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="8"></td>
+                  <td><input type="number" id="prio-2-crit" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="6"></td>
+                  <td><input type="number" id="prio-3-crit" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="5"></td>
+                  <td><input type="number" id="prio-4-crit" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="4"></td>
+                </tr>
+                <tr>
+                  <td>Velocidad (25%)</td>
+                  <td><input type="number" id="prio-1-speed" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="7"></td>
+                  <td><input type="number" id="prio-2-speed" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="9"></td>
+                  <td><input type="number" id="prio-3-speed" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="8"></td>
+                  <td><input type="number" id="prio-4-speed" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="7"></td>
+                </tr>
+                <tr>
+                  <td>Horas Lib. (20%)</td>
+                  <td><input type="number" id="prio-1-hours" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="9"></td>
+                  <td><input type="number" id="prio-2-hours" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="5"></td>
+                  <td><input type="number" id="prio-3-hours" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="6"></td>
+                  <td><input type="number" id="prio-4-hours" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="4"></td>
+                </tr>
+                <tr>
+                  <td>Mitig. Error (20%)</td>
+                  <td><input type="number" id="prio-1-errors" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="5"></td>
+                  <td><input type="number" id="prio-2-errors" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="8"></td>
+                  <td><input type="number" id="prio-3-errors" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="7"></td>
+                  <td><input type="number" id="prio-4-errors" min="1" max="10" class="form-control" oninput="triggerRecalcs()" value="6"></td>
+                </tr>
+                <tr style="background:var(--brand-soft); font-weight:700;">
+                  <td>PUNTAJE (10)</td>
+                  <td style="text-align:center; color:var(--brand-deep);" id="prio-1-total-score">0.0</td>
+                  <td style="text-align:center; color:var(--coral);" id="prio-2-total-score">0.0</td>
+                  <td style="text-align:center;" id="prio-3-total-score">0.0</td>
+                  <td style="text-align:center;" id="prio-4-total-score">0.0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="form-group" style="margin-top:20px;">
+            <label>🎯 Seleccionar Proceso para MVP</label>
+            <div class="grid-4" style="margin-top:10px;">
+              <label class="checkbox-group"><input type="radio" name="selected-sprint-process" value="1" checked onchange="triggerRecalcs()"><span id="lbl-radio-proc1">P1</span></label>
+              <label class="checkbox-group"><input type="radio" name="selected-sprint-process" value="2" onchange="triggerRecalcs()"><span id="lbl-radio-proc2">P2</span></label>
+              <label class="checkbox-group"><input type="radio" name="selected-sprint-process" value="3" onchange="triggerRecalcs()"><span id="lbl-radio-proc3">P3</span></label>
+              <label class="checkbox-group"><input type="radio" name="selected-sprint-process" value="4" onchange="triggerRecalcs()"><span id="lbl-radio-proc4">P4</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROI & Oferta -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title-group"><h3>3.2 Simulación de ROI</h3></div>
+            <div class="form-group"><label>Leads Recuperados / Mes</label><input type="number" id="roi-leads-rec" class="form-control" value="2" oninput="triggerRecalcs()"></div>
+            <div class="form-group"><label>Margen Neto (%)</label><input type="number" id="roi-margin-net" class="form-control" value="25" oninput="triggerRecalcs()"></div>
+            <div class="form-group"><label>Multas Evitadas ($/año)</label><input type="number" id="roi-risk-evited" class="form-control" value="0" oninput="triggerRecalcs()"></div>
+            <div class="form-group"><label>Sprint Fee ($MXN)</label><input type="number" id="roi-sprint-fee" class="form-control" value="60000" oninput="triggerRecalcs()"></div>
+          </div>
+          <div class="card" style="background:var(--brand-soft);">
+            <div class="card-title-group"><h3>Resultados ROI</h3></div>
+            <div class="roi-breakdown-box" style="grid-template-columns:1fr; background:var(--white);">
+              <div class="roi-breakdown-row"><span>Ahorro Tiempo:</span><strong id="res-roi-time-saved" style="color:var(--sage);">$0</strong></div>
+              <div class="roi-breakdown-row"><span>Ingresos Extra:</span><strong id="res-roi-sales-extra" style="color:var(--sage);">$0</strong></div>
+              <div class="roi-breakdown-row"><span>Riesgos Evitados:</span><strong id="res-roi-risk-avoided" style="color:var(--sage);">$0</strong></div>
+              <div class="roi-breakdown-row" style="border-top:1px dashed var(--line);"><span>Total Beneficios (A):</span><strong id="res-roi-benefits-total" style="color:var(--sage);">$0</strong></div>
+              <div class="roi-breakdown-row"><span>Costo TCO (B):</span><strong id="res-roi-tco-total" style="color:var(--coral);">$0</strong></div>
+              <div class="roi-breakdown-row grand-total"><span>ROI %:</span><strong id="res-roi-percent-value" style="font-size:22px; color:var(--brand-deep);">0%</strong></div>
+              <div class="roi-breakdown-row"><span>Payback:</span><strong id="res-roi-payback-value">0 meses</strong></div>
+              <div class="roi-breakdown-row" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line); justify-content:center;">
+                <span id="confidence-score-badge" style="padding:4px 10px; border-radius:12px; font-weight:700; font-size:12px; background:var(--line); color:var(--ink);">Score de Confianza: --</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-group"><h3>3.3 Configuración de la Oferta</h3></div>
+          <div class="form-group"><label>Solución</label><input type="text" id="off-solution-name" class="form-control" value="Sistema de Fuerza Laboral IA"></div>
+          
+          <div class="form-group">
+            <label>Stack y Herramientas</label>
+            <div class="grid-4" style="margin-top:4px;">
+              <label class="checkbox-group"><input type="checkbox" id="tool-make" checked><span>Make.com</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-n8n"><span>n8n</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-claude" checked><span>Claude</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-gpt"><span>GPT-4o</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-wa" checked><span>WhatsApp</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-notion" checked><span>Notion</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-vapi"><span>Vapi</span></label>
+              <label class="checkbox-group"><input type="checkbox" id="tool-hubspot"><span>HubSpot</span></label>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="form-group"><label>Métrica Principal</label><input type="text" id="off-metric-name" class="form-control" value="Tiempo de ciclo"></div>
+            <div class="form-group"><label>Actual</label><input type="text" id="off-metric-base" class="form-control" value="Horas"></div>
+            <div class="form-group"><label>Meta</label><input type="text" id="off-metric-goal" class="form-control" value="< 30 min"></div>
+          </div>
+
+          <!-- Share Link & Finalize -->
+          <div class="roi-breakdown-box" style="margin-top:20px; background:var(--white); border-color:var(--brand); display:flex; justify-content:space-between; padding:18px;">
+            <div>
+              <h4 class="concept">🔗 Enlace del Dashboard del Cliente</h4>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <input type="text" id="shareable-client-url" class="form-control" readonly style="width:360px;" value="">
+              <button class="btn btn-primary" onclick="copyClientURL()">Copiar Link</button>
+            </div>
           </div>
         </div>
 
         <div class="step-navigation">
           <button class="btn btn-secondary" onclick="showStep(2)">Atrás</button>
-          <button class="btn btn-primary" onclick="showStep(4)">Siguiente: Matriz de Priorización</button>
+          <button class="btn btn-primary btn-dark" onclick="saveCurrentDiagnostic()">💾 Guardar y Compartir</button>
         </div>
       </div>
 
-      <!-- ==========================================
-           STEP 4: MATRIZ DE PRIORIZACIÓN
-           ========================================== -->
-      <div class="step-pane" id="pane-step-4" style="display:none;">
-        <div class="card">
-          <div class="card-title-group">
-            <h3>04. Matriz de Priorización Ponderada</h3>
-            <span class="card-subtitle">Decisión de Negocio para el Sprint MVP</span>
-          </div>
-
-          <p class="kpi-meta" style="margin-bottom:12px;">Califica cada proceso prioritario de la sección anterior del **1 al 10** en cada criterio para encontrar el caso de uso con mayor puntaje.</p>
-
-          <div class="table-responsive">
-            <table class="brand-table">
-              <thead>
-                <tr>
-                  <th style="width:40%;">Criterio de Priorización</th>
-                  <th style="width:10%; text-align:center;">Peso</th>
-                  <th style="width:25%; text-align:center;">PROCESO #1 (Calif. 1-10)</th>
-                  <th style="width:25%; text-align:center;">PROCESO #2 (Calif. 1-10)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <span class="concept">Criticalidad del Cuello de Botella</span>
-                    <span class="sub">¿Frena directamente la facturación del negocio?</span>
-                  </td>
-                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">35%</td>
-                  <td>
-                    <input type="number" id="prio-1-crit" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="8">
-                  </td>
-                  <td>
-                    <input type="number" id="prio-2-crit" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="6">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="concept">Velocidad de Entrega del MVP</span>
-                    <span class="sub">¿Puede construirse en Make/n8n sin código complejo en la Semana 2?</span>
-                  </td>
-                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">25%</td>
-                  <td>
-                    <input type="number" id="prio-1-speed" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="7">
-                  </td>
-                  <td>
-                    <input type="number" id="prio-2-speed" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="9">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="concept">Liberación Directa de Horas-Hombre</span>
-                    <span class="sub">¿Reasigna el personal administrativo a tareas facturables reales?</span>
-                  </td>
-                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">20%</td>
-                  <td>
-                    <input type="number" id="prio-1-hours" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="9">
-                  </td>
-                  <td>
-                    <input type="number" id="prio-2-hours" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="5">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="concept">Mitigación de Errores Operativos</span>
-                    <span class="sub">¿Previene multas SAT, penalizaciones contractuales o fugas?</span>
-                  </td>
-                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">20%</td>
-                  <td>
-                    <input type="number" id="prio-1-errors" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="5">
-                  </td>
-                  <td>
-                    <input type="number" id="prio-2-errors" min="1" max="10" class="form-control" placeholder="1-10" style="text-align:center;" oninput="triggerRecalcs()" value="8">
-                  </td>
-                </tr>
-                <tr style="background:var(--brand-soft); font-weight:700;">
-                  <td class="concept">PUNTAJE TOTAL PONDERADO</td>
-                  <td style="text-align:center; font-family:'JetBrains Mono',monospace;">100%</td>
-                  <td style="text-align:center; font-size:16px; font-family:'JetBrains Mono',monospace; color:var(--brand-deep);" id="prio-1-total-score">7.55 / 10</td>
-                  <td style="text-align:center; font-size:16px; font-family:'JetBrains Mono',monospace; color:var(--coral);" id="prio-2-total-score">6.85 / 10</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Process Selection Radio -->
-          <div class="form-group" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--line-soft);">
-            <label style="font-size:14px;">🎯 Proceso Seleccionado Exclusivo para el Sprint MVP</label>
-            <div class="grid-2" style="margin-top:10px;">
-              <label class="checkbox-group" style="padding:16px;">
-                <input type="radio" name="selected-sprint-process" value="1" checked onchange="triggerRecalcs()">
-                <div>
-                  <strong style="display:block; font-size:13.5px;" id="lbl-radio-proc1">Proceso #1</strong>
-                  <span style="font-size:11.5px; color:var(--mute);">Recomendado por puntuación ponderada</span>
-                </div>
-              </label>
-              <label class="checkbox-group" style="padding:16px;">
-                <input type="radio" name="selected-sprint-process" value="2" onchange="triggerRecalcs()">
-                <div>
-                  <strong style="display:block; font-size:13.5px;" id="lbl-radio-proc2">Proceso #2</strong>
-                  <span style="font-size:11.5px; color:var(--mute);">Prioridad operativa alternativa</span>
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-navigation">
-          <button class="btn btn-secondary" onclick="showStep(3)">Atrás</button>
-          <button class="btn btn-primary" onclick="showStep(5)">Siguiente: Simulación de ROI</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 5: SIMULACIÓN DE ROI
-           ========================================== -->
-      <div class="step-pane" id="pane-step-5" style="display:none;">
-        <div class="card">
-          <div class="card-title-group">
-            <h3>05. Ingeniería Financiera y Simulación de ROI</h3>
-            <span class="card-subtitle">Caso de Negocio Justificado en Pesos ($MXN)</span>
-          </div>
-
-          <p class="kpi-meta" style="margin-bottom:12px;">Llene los parámetros de conversión comercial y costos del Sprint MVP para proyectar el retorno de inversión detallado.</p>
-
-          <div class="grid-2">
-            
-            <!-- Left inputs panel -->
-            <div class="card" style="background:var(--paper); border-color:var(--line); padding:24px; gap:16px; box-shadow:none;">
-              <h4 class="card-subtitle" style="font-weight:700; color:var(--ink);">A) Parámetros del Retorno Financiero</h4>
-              
-              <div class="form-group">
-                <label for="roi-leads-rec">Leads / Oportunidades Recuperadas al Mes</label>
-                <input type="number" id="roi-leads-rec" class="form-control" placeholder="Ej. 3" value="2" oninput="triggerRecalcs()">
-              </div>
-
-              <div class="form-group">
-                <label for="roi-margin-net">Margen Neto de la Empresa (%)</label>
-                <input type="number" id="roi-margin-net" class="form-control" placeholder="Ej. 25" value="25" oninput="triggerRecalcs()">
-              </div>
-
-              <div class="form-group">
-                <label for="roi-risk-evited">Costo de Riesgo Contable/Multas SAT Evitado ($/año)</label>
-                <input type="number" id="roi-risk-evited" class="form-control" placeholder="Ej. 30000" value="0" oninput="triggerRecalcs()">
-              </div>
-
-              <div class="form-group">
-                <label for="roi-sprint-fee">Upfront Sprint Fee del MVP ($MXN) *</label>
-                <input type="number" id="roi-sprint-fee" class="form-control" placeholder="Monto del Sprint de Desarrollo" value="60000" oninput="triggerRecalcs()">
-                <span class="kpi-label" style="font-size:10px; margin-top:2px;">Rango metodológico: $45,000 a $90,000 MXN</span>
-              </div>
-            </div>
-
-            <!-- Right results preview -->
-            <div class="card" style="background:var(--brand-soft); border-color:var(--brand); padding:24px; gap:16px; box-shadow:none;">
-              <h4 class="card-subtitle" style="font-weight:700; color:var(--brand-deep);">B) Resultados de la Simulación</h4>
-              
-              <div class="roi-breakdown-box" style="grid-template-columns:1fr; background:var(--white); border:none; padding:18px; box-shadow:var(--shadow);">
-                <div class="numbers" style="gap:12px;">
-                  <div class="roi-breakdown-row">
-                    <span>Ahorro Tiempo (60% Prod. Fantasma):</span>
-                    <strong id="res-roi-time-saved" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Ingresos Extra por Conversión:</span>
-                    <strong id="res-roi-sales-extra" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Riesgos Operativos Evitados:</span>
-                    <strong id="res-roi-risk-avoided" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
-                  </div>
-                  <div class="roi-breakdown-row" style="border-top:1px dashed var(--line); padding-top:8px;">
-                    <span>Total Beneficios Anuales (A):</span>
-                    <strong id="res-roi-benefits-total" style="color:var(--sage); font-family:'IBM Plex Mono',monospace;">$0</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Costo Total de Propiedad TCO (B):</span>
-                    <strong id="res-roi-tco-total" style="color:var(--coral); font-family:'IBM Plex Mono',monospace;">$0</strong>
-                  </div>
-                  <div class="roi-breakdown-row grand-total" style="border-top:2px solid var(--ink); padding-top:10px;">
-                    <span>Retorno Anual (ROI %):</span>
-                    <strong id="res-roi-percent-value" style="font-family:'Space Grotesk',sans-serif; font-size:22px; color:var(--brand-deep);">0%</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Periodo de Recuperación:</span>
-                    <strong id="res-roi-payback-value" style="font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--ink);">0 meses</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="step-navigation">
-          <button class="btn btn-secondary" onclick="showStep(4)">Atrás</button>
-          <button class="btn btn-primary" onclick="showStep(6)">Siguiente: Diseño de la Oferta</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 6: DISEÑO DE LA OFERTA
-           ========================================== -->
-      <div class="step-pane" id="pane-step-6" style="display:none;">
-        <div class="card">
-          <div class="card-title-group">
-            <h3>06. Diseño y Presentación de la Oferta</h3>
-            <span class="card-subtitle">Blueprint Comercial del Agente IA</span>
-          </div>
-
-          <div class="form-group">
-            <label for="off-solution-name">Nombre de la Solución Propuesta *</label>
-            <input type="text" id="off-solution-name" class="form-control" placeholder="Ej. Agente Documental y Calificación de Leads IA" value="Sistema de Fuerza Laboral IA">
-          </div>
-
-          <div class="form-group">
-            <label>Herramientas No-Code / Low-Code a Utilizar</label>
-            <div class="grid-4" style="margin-top:4px;">
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-make" checked>
-                <span>Make.com</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-n8n">
-                <span>n8n</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-claude" checked>
-                <span>Claude API</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-gpt">
-                <span>GPT-4o</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-wa" checked>
-                <span>WhatsApp Business API</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-notion" checked>
-                <span>Notion / Airtable</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-vapi">
-                <span>Vapi / Retell</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="tool-hubspot">
-                <span>HubSpot / GSheets</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Stack Técnico del Agente a Desplegar</label>
-            <div class="grid-4" style="margin-top:4px;">
-              <label class="checkbox-group">
-                <input type="checkbox" id="stack-conv">
-                <span>Agente Conversacional</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="stack-doc" checked>
-                <span>Agente Documental (RAG/OCR)</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="stack-orchestr">
-                <span>Multi-Agente Orquestado</span>
-              </label>
-              <label class="checkbox-group">
-                <input type="checkbox" id="stack-backend" checked>
-                <span>Procesos Backend</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="grid-3">
-            <div class="form-group">
-              <label for="off-metric-name">Nombre de la Métrica Principal</label>
-              <input type="text" id="off-metric-name" class="form-control" placeholder="Ej. Tiempo de revisión por exp." value="Tiempo de ciclo">
-            </div>
-            <div class="form-group">
-              <label for="off-metric-base">Valor Actual (Baseline)</label>
-              <input type="text" id="off-metric-base" class="form-control" placeholder="Ej. 4 horas por expediente" value="Horas">
-            </div>
-            <div class="form-group">
-              <label for="off-metric-goal">Meta con IA (Año 1)</label>
-              <input type="text" id="off-metric-goal" class="form-control" placeholder="Ej. < 30 minutos por expediente" value="< 30 min">
-            </div>
-          </div>
-
-          <div class="grid-2" style="border-top:1px solid var(--line-soft); padding-top:20px;">
-            <div class="form-group">
-              <label for="off-sig-consultor">Nombre de Firma Consultor aiLearning</label>
-              <input type="text" id="off-sig-consultor" class="form-control" placeholder="Nombre del consultor" value="aiLearning Team">
-            </div>
-            <div class="form-group">
-              <label for="off-sig-cliente">Nombre de Firma del Cliente</label>
-              <input type="text" id="off-sig-cliente" class="form-control" placeholder="Representante de la PyME">
-            </div>
-          </div>
-        </div>
-
-        <div class="step-navigation">
-          <button class="btn btn-secondary" onclick="showStep(5)">Atrás</button>
-          <button class="btn btn-primary btn-dark" onclick="saveAndGoToDashboard()">💾 Finalizar Diagnóstico y Ver Dashboard</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 7: DASHBOARD DE CONTROL (CONSULTOR VIEW)
-           ========================================== -->
-      <div class="step-pane" id="pane-step-7" style="display:none;">
-        
-        <!-- Live Synchronize Banner -->
-        <div class="roi-breakdown-box" style="background:var(--white); border-color:var(--brand); display:flex; justify-content:space-between; padding:18px;">
-          <div>
-            <h4 class="concept">🔗 Enlace Único de la Sesión del Cliente</h4>
-            <span class="sub" style="font-size:12px; margin-top:2px;">Copia este enlace para enviárselo a tu cliente en la llamada o subirlo a la plataforma.</span>
-          </div>
-          <div style="display:flex; gap:12px; align-items:center;">
-            <input type="text" id="shareable-client-url" class="form-control" readonly style="width:360px; font-family:'JetBrains Mono',monospace; font-size:11px;" value="">
-            <button class="btn btn-primary" onclick="copyClientURL()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar Link</button>
-          </div>
-        </div>
-
-        <!-- Dashboard KPI Summary Cards -->
-        <div class="kpi-row">
-          <div class="kpi-card ink">
-            <div class="kpi-label">Dolor Anual Evitado</div>
-            <div class="kpi-value" id="dash-pain-total" style="color:var(--brand);">$0</div>
-            <div class="kpi-meta">Cuellos de botella cuantificados</div>
-          </div>
-          <div class="kpi-card sage">
-            <div class="kpi-label">Total Beneficios Anuales</div>
-            <div class="kpi-value" id="dash-benefits-total">$0</div>
-            <div class="kpi-meta">Ingresos + Horas liberadas</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Retorno Inversión (ROI)</div>
-            <div class="kpi-value" id="dash-roi-percent" style="color:var(--brand-deep);">0%</div>
-            <div class="kpi-meta">Tasa interna de retorno (TCO)</div>
-          </div>
-          <div class="kpi-card coral">
-            <div class="kpi-label">Payback Period</div>
-            <div class="kpi-value" id="dash-payback-months">0 meses</div>
-            <div class="kpi-meta">Tiempo de recuperación de inversión</div>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          
-          <!-- Chart Visual Panel -->
-          <div class="card">
-            <div class="card-title-group">
-              <h3>Matriz de Prioridades Operativas</h3>
-              <span class="card-subtitle">Análisis de Restricciones</span>
-            </div>
-            <div class="chart-container">
-              <canvas id="priority-radar-chart"></canvas>
-            </div>
-          </div>
-
-          <!-- Proposal Pricing Summary Card -->
-          <div class="card" style="gap:16px;">
-            <div class="card-title-group">
-              <h3>Inversión de la Solución IA</h3>
-              <span class="card-subtitle">Estructura Comercial Fija</span>
-            </div>
-            
-            <div class="numbers" style="display:flex; flex-direction:column; gap:12px; font-size:13px;">
-              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
-                <span><strong>Fase 1: AI Audit Gateway</strong></span>
-                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;">$15,000 MXN</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
-                <span><strong>Fase 2: Sprint MVP Fee (Sandbox)</strong></span>
-                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;" id="dash-pricing-sprint">$60,000 MXN</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; border-bottom:1px dotted var(--line); padding-bottom:8px;">
-                <span><strong>Fase 3: Licencia Mensual Recurrente</strong></span>
-                <span style="font-family:'IBM Plex Mono',monospace; font-weight:700;">$14,000 MXN / mes</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; background:var(--brand-soft); padding:10px 14px; border-radius:8px; margin-top:8px;">
-                <strong>Métrica Clave: <span id="dash-metric-name">Tiempo</span></strong>
-                <span style="font-weight:700;"><span id="dash-metric-base">0</span> ➔ <span id="dash-metric-goal">0</span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title-group">
-            <h3>Cronograma de Próximos Pasos (Ciclo Solopreneur de 3 Semanas)</h3>
-            <span class="card-subtitle">Estrategia ADKAR y Despliegue</span>
-          </div>
-
-          <div class="grid-2">
-            <div class="timeline">
-              <div class="timeline-item completed">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Fase 1: AI Audit Gateway (Mapeo BPMN 2.0 y Caso de Negocio)</div>
-                <div class="timeline-meta">
-                  <span>Responsable: Cliente & aiLearning</span>
-                  <span>Estatus: Completado</span>
-                </div>
-              </div>
-              <div class="timeline-item active">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Paso 1: Pago verificado de Auditoría y Mapeo en vivo de Gemba</div>
-                <div class="timeline-meta">
-                  <span>Responsable: Cliente</span>
-                  <span>Fecha Límite: Día 1 del Sprint</span>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Paso 2: Entrega de Blueprint Técnico y Aprobación del Sprint Fee</div>
-                <div class="timeline-meta">
-                  <span>Responsable: aiLearning & Cliente</span>
-                  <span>Fecha Límite: Día 5 del Sprint</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Paso 3: Desarrollo en Escenario Sandbox y Carga RAG Vectorial</div>
-                <div class="timeline-meta">
-                  <span>Responsable: aiLearning</span>
-                  <span>Fecha Límite: Semana 2</span>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Paso 4: Capacitación al equipo (ADKAR - Knowledge) y Piloto en vivo</div>
-                <div class="timeline-meta">
-                  <span>Responsable: aiLearning & Personal Cliente</span>
-                  <span>Fecha Límite: Semana 3</span>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-title">Paso 5: Cierre del Sprint, Auditoría de Ciclos y Oferta de Producción</div>
-                <div class="timeline-meta">
-                  <span>Responsable: Consultor aiLearning</span>
-                  <span>Fecha Límite: Día 15 del Sprint</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-navigation" style="justify-content:center; gap:20px;">
-          <button class="btn btn-secondary" onclick="showStep(6)">Editar Datos</button>
-          <button class="btn btn-primary" onclick="triggerNativePrint()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18h12v4H6zM6 14H4a2 2 0 0 1-2-2V11a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/></svg> Imprimir / Guardar PDF Oficial</button>
-        </div>
-
-      </div>
-
-    </main>
-
-  </div>
-
-  <!-- ================================================================
+<!-- ================================================================
        HIGH-FIDELITY PRINTABLE DOCUMENT TEMPLATE (PDF EXPORT ONLY)
        ================================================================ -->
   <div id="print-container">
@@ -1254,6 +947,7 @@
   </div>
 
   <!-- Workspace JavaScript Logic File -->
+  <script src="/js/benchmarks.js"></script>
   <script src="/js/formulas.js"></script>
   <script src="/js/app.js"></script>
 </body>

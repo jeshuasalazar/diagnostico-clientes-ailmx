@@ -252,11 +252,13 @@
       <main class="client-layout">
         
         <!-- Hero section -->
-        <div class="client-hero-card">
-          <h2 class="client-hero-title" id="client-company-name">Cargando diagnóstico...</h2>
-          <div class="client-hero-meta">
-            <span>Vertical: <strong id="client-vertical-label">-</strong></span>
-            <span>Contacto: <strong id="client-contact-name">-</strong></span>
+        <div class="client-hero-card" style="text-align:center;">
+          <h2 class="client-hero-title" id="client-company-name" style="font-size:42px;">Cargando diagnóstico...</h2>
+          <p style="font-family:'Space Grotesk',sans-serif; font-size:24px; color:rgba(255,255,255,0.9); margin-bottom:20px;">
+            Tu negocio tiene un potencial de <strong id="hero-potencial-ahorro" style="color:#6B9080;">$0 MXN/año</strong>
+          </p>
+          <div class="client-hero-meta" style="justify-content:center;">
+            <span>🎯 Precisión del diagnóstico: <strong id="client-score-confianza">87%</strong></span>
             <span>Folio: <strong id="client-folio">-</strong></span>
             <span>Fecha: <strong id="client-date">-</strong></span>
           </div>
@@ -264,185 +266,75 @@
 
         <!-- 4 KPI Summary Cards -->
         <div class="kpi-row">
-          <div class="kpi-card ink">
-            <div class="kpi-label">Costo Anual del Dolor</div>
-            <div class="kpi-value" id="dash-pain-total" style="color:var(--brand);">$0</div>
-            <div class="kpi-meta">Pérdida por procesos manuales ineficientes.</div>
+          <div class="kpi-card ink" style="align-items:center; text-align:center;">
+            <div class="kpi-label">💰 Costo del Dolor</div>
+            <div class="kpi-value" id="dash-pain-total" style="color:var(--coral); font-size:28px;">$0</div>
+            <div class="kpi-meta">Pérdida anual estimada</div>
           </div>
-          <div class="kpi-card sage">
-            <div class="kpi-label">Beneficios Anuales Proyectados</div>
-            <div class="kpi-value" id="dash-benefits-total">$0</div>
-            <div class="kpi-meta">Ahorro en tiempo + ganancias por conversión.</div>
+          <div class="kpi-card sage" style="align-items:center; text-align:center;">
+            <div class="kpi-label">🚀 Beneficio Anual</div>
+            <div class="kpi-value" id="dash-benefits-total" style="color:var(--brand); font-size:28px;">$0</div>
+            <div class="kpi-meta">Ahorros y nuevas ventas</div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Retorno de Inversión (ROI)</div>
-            <div class="kpi-value" id="dash-roi-percent" style="color:var(--brand-deep);">0%</div>
-            <div class="kpi-meta">ROI anual basado en TCO metodológico.</div>
+          <div class="kpi-card" style="align-items:center; text-align:center; padding-bottom:8px;">
+            <div class="kpi-label">📈 ROI del Proyecto</div>
+            <div style="height:120px; width:100%; margin-top:10px; position:relative; display:flex; justify-content:center;">
+              <canvas id="roi-gauge-chart"></canvas>
+            </div>
+            <div id="dash-roi-percent" style="display:none;"></div>
           </div>
-          <div class="kpi-card coral">
-            <div class="kpi-label">Retorno de Inversión (Payback)</div>
-            <div class="kpi-value" id="dash-payback-months">0 meses</div>
-            <div class="kpi-meta">Periodo estimado de recuperación.</div>
+          <div class="kpi-card coral" style="align-items:center; text-align:center;">
+            <div class="kpi-label">⏱️ Payback</div>
+            <div class="kpi-value" id="dash-payback-months" style="color:var(--ink); font-size:28px;">0 meses</div>
+            <div class="kpi-meta">Periodo de recuperación</div>
           </div>
         </div>
 
-        <!-- Diagnostic & Financial Breakdown Grid -->
+        <!-- Charts: Waterfall and Radar -->
         <div class="grid-2">
           
-          <!-- Column 1: Priority Matrix Radar & Selected Solution Blueprint -->
-          <div style="display:flex; flex-direction:column; gap:32px;">
-            
-            <!-- Prioritization Radar Card -->
-            <div class="card">
-              <div class="card-title-group">
-                <h3>Matriz de Prioridades Operativas</h3>
-                <span class="card-subtitle">Análisis Multicriterio</span>
-              </div>
-              <div style="height: 280px; position: relative;">
-                <canvas id="priority-radar-chart"></canvas>
-              </div>
+          <div class="card">
+            <div class="card-title-group">
+              <h3>Ingeniería Financiera</h3>
+              <span class="card-subtitle">Waterfall de Beneficios Anuales</span>
             </div>
-
-            <!-- MVP Solution Proposal Box -->
-            <div class="card" style="background: var(--brand-soft); border-color: var(--brand);">
-              <div class="card-title-group" style="border-color: rgba(73, 121, 236, 0.2);">
-                <h3 style="color: var(--brand-deep);">Sprint MVP Seleccionado</h3>
-                <span class="card-subtitle" style="color: var(--brand);">Propuesta Funcional</span>
-              </div>
-              <div style="display:flex; flex-direction:column; gap:16px;">
-                <div class="form-group">
-                  <span class="kpi-label">Nombre de la Solución</span>
-                  <strong style="font-size:16px; color:var(--ink);" id="dash-solution-name">-</strong>
-                </div>
-                <div class="form-group">
-                  <span class="kpi-label">Herramientas & Stack No-Code</span>
-                  <span style="font-size:13.5px; font-weight:600; color:var(--ink-2);" id="dash-solution-stack">-</span>
-                </div>
-                <div class="form-group">
-                  <span class="kpi-label">Métrica de Éxito Comprometida</span>
-                  <span style="font-size:13.5px; font-weight:600; color:var(--ink-2);" id="dash-metric-summary">-</span>
-                </div>
-                <div class="form-group" style="border-top:1px dashed rgba(73, 121, 236, 0.3); padding-top:12px;">
-                  <span class="kpi-label">Inversión Sprint MVP Upfront</span>
-                  <strong style="font-size:18px; color:var(--brand-deep);" id="dash-pricing-sprint">$0 MXN</strong>
-                </div>
-              </div>
+            <div style="height: 320px; position: relative;">
+              <canvas id="benefits-waterfall-chart"></canvas>
             </div>
           </div>
 
-          <!-- Column 2: Business Info, Bottlenecks & ROI Table -->
-          <div style="display:flex; flex-direction:column; gap:32px;">
-            
-            <!-- Business Info & Bottlenecks Card -->
-            <div class="card">
-              <div class="card-title-group">
-                <h3>Diagnóstico Comercial y Canales</h3>
-                <span class="card-subtitle">Análisis Fricciones</span>
-              </div>
-              
-              <div class="grid-2">
-                <div class="form-group">
-                  <span class="kpi-label">Ubicación y Estructura</span>
-                  <span id="dash-ciudad" style="font-weight:600;">-</span>
-                </div>
-                <div class="form-group">
-                  <span class="kpi-label">Estructura Organizacional</span>
-                  <span id="dash-empleados" style="font-weight:600;">-</span>
-                </div>
-              </div>
-
-              <div class="grid-2">
-                <div class="form-group">
-                  <span class="kpi-label">Sistemas CRM / ERP</span>
-                  <span id="dash-crm-erp" style="font-weight:600;">-</span>
-                </div>
-                <div class="form-group">
-                  <span class="kpi-label">Canales de Comunicación</span>
-                  <span id="dash-canales" style="font-weight:600;">-</span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <span class="kpi-label">Métricas Financieras del Negocio</span>
-                <span id="dash-metrics" style="font-weight:600;">-</span>
-              </div>
-
-              <div class="form-group" style="border-top:1px solid var(--line-soft); padding-top:20px;">
-                <span class="kpi-label" style="margin-bottom:8px;">Dolores Detectados en la Operación</span>
-                <div class="client-bottleneck-list" id="dash-bottlenecks-list">
-                  <!-- Dynamic loading -->
-                </div>
-              </div>
+          <div class="card">
+            <div class="card-title-group">
+              <h3>Matriz de Priorización</h3>
+              <span class="card-subtitle">Análisis Multicriterio</span>
             </div>
-
-            <!-- Detailed Engineering Finance Card -->
-            <div class="card">
-              <div class="card-title-group">
-                <h3>Ingeniería Financiera del Retorno (Anual)</h3>
-                <span class="card-subtitle">Desglose de Ahorros</span>
-              </div>
-              
-              <div class="roi-breakdown-box" style="grid-template-columns:1fr; background:var(--paper); border:none; padding:0; box-shadow:none;">
-                <div class="numbers" style="gap:14px;">
-                  <div class="roi-breakdown-row">
-                    <span>Ahorro en Horas de Operación (60% Prod. Fantasma):</span>
-                    <strong id="dash-time-saved" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Ingresos Extra por Conversión Comercial:</span>
-                    <strong id="dash-sales-extra" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Riesgos de Multas/Errores Operativos Evitados:</span>
-                    <strong id="dash-risks-avoided" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:14px;">$0 MXN</strong>
-                  </div>
-                  
-                  <div class="roi-breakdown-row" style="border-top:1.5px dashed var(--line); padding-top:12px;">
-                    <span>Total Beneficios Anuales Proyectados:</span>
-                    <strong id="dash-roi-benefits-total-bottom" style="color:var(--sage); font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700;">$0 MXN</strong>
-                  </div>
-                  <div class="roi-breakdown-row">
-                    <span>Costo Total de Propiedad TCO (Gateway + Sprint + APIs):</span>
-                    <strong id="dash-roi-tco-total-bottom" style="color:var(--coral); font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700;">$0 MXN</strong>
-                  </div>
-                </div>
-              </div>
+            <div style="height: 320px; position: relative;">
+              <canvas id="priority-radar-chart"></canvas>
             </div>
-
           </div>
         </div>
 
         <!-- Roadmap Timeline / Implementation Timeline -->
         <div class="card">
           <div class="card-title-group">
-            <h3>Plan de Implementación / Rollout Roadmap</h3>
-            <span class="card-subtitle">Estrategia Metodológica</span>
+            <h3>Sprint de 3 Semanas</h3>
+            <span class="card-subtitle">Roadmap Metodológico</span>
           </div>
-          
-          <div class="roadmap-timeline">
-            <div class="roadmap-step">
-              <div class="roadmap-step-num">01</div>
-              <div class="roadmap-step-title">Semana 1: Kickoff & BPMN</div>
-              <div class="roadmap-step-desc">Alineación del equipo, modelado formal de procesos y mapeo detallado de variables operativas.</div>
-            </div>
-            
-            <div class="roadmap-step">
-              <div class="roadmap-step-num">02</div>
-              <div class="roadmap-step-title">Semana 2: Desarrollo Sandbox</div>
-              <div class="roadmap-step-desc">Construcción ágil de automatizaciones en Make/n8n y conexión de APIs seguras de Inteligencia Artificial.</div>
-            </div>
-            
-            <div class="roadmap-step">
-              <div class="roadmap-step-num">03</div>
-              <div class="roadmap-step-title">Semana 3: Pruebas & ADKAR</div>
-              <div class="roadmap-step-desc">Pruebas piloto de control de errores, afinación de prompts e inducción y adopción del personal operativo.</div>
-            </div>
-            
-            <div class="roadmap-step">
-              <div class="roadmap-step-num">04</div>
-              <div class="roadmap-step-title">Semana 4: Go-Live & Soporte</div>
-              <div class="roadmap-step-desc">Lanzamiento oficial del Agente IA en producción con monitoreo en caliente de KPIs de negocio.</div>
-            </div>
+          <div id="sprint-timeline" style="margin-top:20px;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="card" style="background:var(--ink); color:var(--white); align-items:center; padding:40px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:28px; margin-bottom:24px;">¿Listo para transformar tu operación?</h3>
+          <div style="display:flex; gap:16px;">
+            <button class="btn" style="background:#25D366; color:white; font-size:15px; padding:12px 24px;" onclick="shareOnWhatsApp()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Compartir por WhatsApp
+            </button>
+            <button class="btn btn-secondary" style="border:none; font-size:15px; padding:12px 24px;" onclick="exportPDF()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Descargar Reporte PDF
+            </button>
           </div>
         </div>
 
