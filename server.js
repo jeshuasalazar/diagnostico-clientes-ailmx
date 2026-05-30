@@ -1,7 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const puppeteer = require('puppeteer');
 const { dbRun, dbGet, dbAll } = require('./database');
 
 const app = express();
@@ -236,6 +235,10 @@ app.get('/api/diagnosticos/:id/pdf', async (req, res) => {
     if (!row) {
       return res.status(404).json({ error: 'Diagnóstico no encontrado.' });
     }
+
+    // Dynamic import to fix ERR_REQUIRE_ESM on Railway
+    const puppeteerModule = await import('puppeteer');
+    const puppeteer = puppeteerModule.default || puppeteerModule;
 
     const browser = await puppeteer.launch({
       headless: "new",
